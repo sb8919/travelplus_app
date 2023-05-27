@@ -23,81 +23,91 @@ class _InterestsPageState extends State<InterestsPage> {
     });
   }
 
+  Widget buildInterestTile(String title, bool isActive) {
+    return InkWell(
+      onTap: () {
+        toggleInterest(title);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: isActive ? Colors.blue : Colors.grey.shade300,
+            width: isActive ? 2.0 : 1.0,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        child: Row(
+          children: [
+            Icon(
+              isActive ? Icons.check_box : Icons.check_box_outline_blank,
+              color: isActive ? Colors.blue : Colors.grey.shade500,
+            ),
+            SizedBox(width: 8.0),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16.0,
+                color: isActive ? Colors.blue : Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('관심사를 선택해주세요.'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CheckboxListTile(
-              title: Text('가볼만한곳'),
-              value: selectedInterests.contains('가볼만한곳'),
-              onChanged: (bool? value) {
-                toggleInterest('가볼만한곳');
-              },
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SizedBox(height: 60.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              '무엇을 좋아하세요?',
+              style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            CheckboxListTile(
-              title: Text('가족여행'),
-              value: selectedInterests.contains('가족여행'),
-              onChanged: (bool? value) {
-                toggleInterest('가족여행');
-              },
+          ),
+          SizedBox(height: 10.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 22.0),
+            child: Text(
+              '딱 맞는 여행지를 추천해드립니다.',
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.grey.shade500,
+              ),
             ),
-            CheckboxListTile(
-              title: Text('관람'),
-              value: selectedInterests.contains('관람'),
-              onChanged: (bool? value) {
-                toggleInterest('관람');
-              },
+          ),
+          SizedBox(height: 20.0), // 간격을 넓히기 위한 SizedBox 추가
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: <Widget>[
+                  buildInterestTile('가볼만한곳', selectedInterests.contains('가볼만한곳')),
+                  buildInterestTile('가족여행', selectedInterests.contains('가족여행')),
+                  buildInterestTile('관람', selectedInterests.contains('관람')),
+                  buildInterestTile('맛집', selectedInterests.contains('맛집')),
+                  buildInterestTile('우정여행', selectedInterests.contains('우정여행')),
+                  buildInterestTile('전통', selectedInterests.contains('전통')),
+                  buildInterestTile('체험', selectedInterests.contains('체험')),
+                  buildInterestTile('카페', selectedInterests.contains('카페')),
+                  buildInterestTile('캠핑', selectedInterests.contains('캠핑')),
+                ],
+              ),
             ),
-            CheckboxListTile(
-              title: Text('맛집'),
-              value: selectedInterests.contains('맛집'),
-              onChanged: (bool? value) {
-                toggleInterest('맛집');
-              },
-            ),
-            CheckboxListTile(
-              title: Text('우정여행'),
-              value: selectedInterests.contains('우정여행'),
-              onChanged: (bool? value) {
-                toggleInterest('우정여행');
-              },
-            ),
-            CheckboxListTile(
-              title: Text('전통'),
-              value: selectedInterests.contains('전통'),
-              onChanged: (bool? value) {
-                toggleInterest('전통');
-              },
-            ),
-            CheckboxListTile(
-              title: Text('체험'),
-              value: selectedInterests.contains('체험'),
-              onChanged: (bool? value) {
-                toggleInterest('체험');
-              },
-            ),
-            CheckboxListTile(
-              title: Text('카페'),
-              value: selectedInterests.contains('카페'),
-              onChanged: (bool? value) {
-                toggleInterest('카페');
-              },
-            ),
-            CheckboxListTile(
-              title: Text('캠핑'),
-              value: selectedInterests.contains('캠핑'),
-              onChanged: (bool? value) {
-                toggleInterest('캠핑');
-              },
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
+          ),
+          SizedBox(height: 10.0), // 간격을 넓히기 위한 SizedBox 추가
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: ElevatedButton(
               onPressed: () {
                 print('Selected Interests: $selectedInterests'); // 선택된 관심사 출력
 
@@ -110,8 +120,9 @@ class _InterestsPageState extends State<InterestsPage> {
               },
               child: Text('다음'),
             ),
-          ],
-        ),
+          ),
+          SizedBox(height: 16.0),
+        ],
       ),
     );
   }

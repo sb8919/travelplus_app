@@ -8,8 +8,19 @@ class Login extends StatelessWidget {
 
   Login({required this.name});
 
+  // 데이터베이스에 로그인 정보를 확인하는 메서드
+  void login(String id, String password) {
+    // 여기에 데이터베이스 로그인 로직을 구현하세요.
+    print('ID: $id');
+    print('Password: $password');
+    // 데이터베이스에 로그인 정보를 확인하는 로직을 추가하세요.
+  }
+
   @override
   Widget build(BuildContext context) {
+    TextEditingController idController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('로그인을 해주세요.'),
@@ -27,6 +38,7 @@ class Login extends StatelessWidget {
             SizedBox(
               width: 200,  // 원하는 가로 길이를 지정해주세요
               child: TextFormField(
+                controller: idController,
                 decoration: InputDecoration(
                   labelText: '아이디',
                 ),
@@ -37,6 +49,7 @@ class Login extends StatelessWidget {
             SizedBox(
               width: 200,  // 원하는 가로 길이를 지정해주세요
               child: TextFormField(
+                controller: passwordController,
                 decoration: InputDecoration(
                   labelText: '비밀번호',
                 ),
@@ -47,6 +60,10 @@ class Login extends StatelessWidget {
             // 로그인 버튼
             ElevatedButton(
               onPressed: () {
+                String id = idController.text;
+                String password = passwordController.text;
+                login(id, password);
+
                 // 로그인 버튼 동작
                 Navigator.push(
                   context,

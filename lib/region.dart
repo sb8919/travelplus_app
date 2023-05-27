@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'Interests.dart';
 import 'login.dart';
+import 'Interests.dart';
 
 class Region extends StatefulWidget {
   final String name;
@@ -47,80 +49,122 @@ class _RegionState extends State<Region> {
     }).toList();
   }
 
+  void printSelectedValues() {
+    print('Selected Region: $selectedRegion');
+    print('Selected City: $selectedCity');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('관심지역을 선택해주세요.'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Text(
-              '관심지역',
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Text(
-              '대한민국 권역 선택',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: DropdownButton<String>(
-              value: selectedRegion,
-              items: generateRegionItems(),
-              onChanged: (String? value) {
-                setState(() {
-                  selectedRegion = value;
-                  selectedCity = null; // 권역이 변경되면 도시 선택을 초기화합니다.
-                });
-              },
-              hint: Text('권역 선택'),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Text(
-              '지역 선택',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: DropdownButton<String>(
-              value: selectedCity,
-              items: generateCityItems(),
-              onChanged: (String? value) {
-                setState(() {
-                  selectedCity = value;
-                });
-              },
-              hint: Text('도시 선택'),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () {
-                // 선택된 관심지역 정보를 데이터베이스에 저장하는 로직을 추가해야 합니다.
-                print('권역: $selectedRegion, 도시: $selectedCity');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => Login(name: widget.name),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  '관심지역을 선택해주세요.',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    '권역 선택',
+                    style: TextStyle(fontSize: 16),
                   ),
-                );
-              },
-              child: Text('다음'),
-            ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: DropdownButton<String>(
+                    value: selectedRegion,
+                    items: generateRegionItems(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedRegion = value;
+                        selectedCity = null; // 권역이 변경되면 도시 선택을 초기화합니다.
+                      });
+                    },
+                    hint: Text('권역 선택'),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    '지역 선택',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: DropdownButton<String>(
+                    value: selectedCity,
+                    items: generateCityItems(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedCity = value;
+                      });
+                    },
+                    hint: Text('지역 선택'),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  InterestsPage(name: widget.name),
+                            ),
+                          );
+                        },
+                        child: Text('이전'),
+                      ),
+                    ),
+                    SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          printSelectedValues(); // 값 출력
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  Login(name: widget.name),
+                            ),
+                          );
+                        },
+                        child: Text('다음'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

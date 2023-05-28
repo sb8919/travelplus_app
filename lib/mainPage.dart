@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:travel_login2/join_complete.dart';
+import 'package:travel_login2/login/join_complete.dart';
 
-import 'login_complete.dart';
+import 'login/login_complete.dart';
 
 class MainPage extends StatelessWidget {
   @override

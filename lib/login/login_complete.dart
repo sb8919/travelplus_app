@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'mainPage.dart';
+import '../mainPage.dart';
 
 class LoginComplete extends StatelessWidget {
   final String name;

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:travel_login2/Interests.dart';
+import 'package:mysql1/mysql1.dart';
+import '../interest/Interests.dart';
 
 class Logo extends StatefulWidget {
+  final MySqlConnection conn; // conn 매개변수 추가
+
+  Logo({required this.conn}); // 생성자에 conn 매개변수 추가
   @override
   _LogoState createState() => _LogoState();
 }
@@ -80,11 +84,10 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
                   scale: _scaleAnimation,
                   child: ElevatedButton(
                     onPressed: () {
-                      String name = "John"; // 이름을 지정해주세요
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (BuildContext context) => InterestsPage(name: name),
+                          builder: (BuildContext context) => InterestsPage(),
                         ),
                       );
                     },

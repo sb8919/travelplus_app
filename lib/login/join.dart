@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mysql1/mysql1.dart';
 import 'join_complete.dart';
 import 'login.dart';
-import 'mainPage.dart';
+import '../mainPage.dart';
 
 class Join extends StatelessWidget {
   final String name;
@@ -9,12 +10,33 @@ class Join extends StatelessWidget {
   Join({required this.name});
 
   // 데이터베이스에 회원 정보를 저장하는 메서드
-  void saveUserData(String name, String id, String password) {
-    // 여기에 데이터베이스 저장 로직을 구현하세요.
-    print('Name: $name');
-    print('ID: $id');
-    print('Password: $password');
-    // 데이터베이스에 저장하는 로직을 추가하세요.
+  void saveUserData(String name, String id, String password) async {
+    final settings = ConnectionSettings(
+      host: 'orion.mokpo.ac.kr',
+      port: 8381,
+      user: 'root',
+      password: 'ScE1234**',
+      db: 'Travelplus',
+    );
+
+    final conn = await MySqlConnection.connect(settings);
+
+    try {
+      final result = await conn.query(
+        'INSERT INTO User (user_id, user_pw, user_name) VALUES (?, ?, ?)',
+        [name, id, password],
+      );
+
+      if (result?.affectedRows != null && result!.affectedRows! > 0) {
+        print('User data saved successfully');
+      } else {
+        print('Failed to save user data');
+      }
+    } catch (e) {
+      print('Error saving user data: $e');
+    } finally {
+      await conn.close();
+    }
   }
 
   @override

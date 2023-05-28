@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:travel_login2/region.dart';
+import 'package:mysql1/mysql1.dart';
+import 'package:travel_login2/interest/region.dart';
 
 class InterestsPage extends StatefulWidget {
-  final String name;
-
-  InterestsPage({required this.name});
-
   @override
   _InterestsPageState createState() => _InterestsPageState();
 }
@@ -23,38 +20,33 @@ class _InterestsPageState extends State<InterestsPage> {
     });
   }
 
-  Widget buildInterestTile(String title, bool isActive) {
-    return InkWell(
-      onTap: () {
-        toggleInterest(title);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: isActive ? Colors.blue : Colors.grey.shade300,
-            width: isActive ? 2.0 : 1.0,
-          ),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-        child: Row(
-          children: [
-            Icon(
-              isActive ? Icons.check_box : Icons.check_box_outline_blank,
-              color: isActive ? Colors.blue : Colors.grey.shade500,
-            ),
-            SizedBox(width: 8.0),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16.0,
-                color: isActive ? Colors.blue : Colors.black,
-              ),
-            ),
-          ],
-        ),
-      ),
+  Future<void> saveInterestsToDatabase() async {
+    // MySQL1 패키지를 사용하여 데이터베이스에 연결
+    final settings = ConnectionSettings(
+      host: 'orion.mokpo.ac.kr',
+      port: 8381,
+      user: 'root',
+      password: 'ScE1234**',
+      db: 'Travelplus',
     );
+    final conn = await MySqlConnection.connect(settings);
+
+    try {
+      // 선택한 관심사를 데이터베이스에 저장하는 INSERT 쿼리 실행
+      for (String interest_theme in selectedInterests) {
+        await conn.query(
+          'INSERT INTO User (interest_theme) VALUES (?)',
+          [interest_theme],
+        );
+      }
+
+      print('Interests saved to database!');
+    } catch (e) {
+      print('Error saving interests to database: $e');
+    } finally {
+      // 연결 종료
+      await conn.close();
+    }
   }
 
   @override
@@ -114,25 +106,63 @@ class _InterestsPageState extends State<InterestsPage> {
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    //print('Selected Interests: $selectedInterests'); // 선택된 관심사 출력
-
                     for (String interest in selectedInterests) {
                       print('$interest');
                     }
 
+                    // 데이터베이스에 관심사 저장
+                    saveInterestsToDatabase();
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (BuildContext context) => Region(name: widget.name),
+                        builder: (BuildContext context) => Region(
+                          selectedInterests: selectedInterests, name: '',
+                        ),
                       ),
                     );
                   },
                   child: Text('다음'),
                 ),
               ),
+
               SizedBox(height: 16.0),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildInterestTile(String title, bool isActive) {
+    return InkWell(
+      onTap: () {
+        toggleInterest(title);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: isActive ? Colors.blue : Colors.grey.shade300,
+            width: isActive ? 2.0 : 1.0,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        child: Row(
+          children: [
+            Icon(
+              isActive ? Icons.check_box : Icons.check_box_outline_blank,
+              color: isActive ? Colors.blue : Colors.grey.shade500,
+            ),
+            SizedBox(width: 8.0),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16.0,
+                color: isActive ? Colors.blue : Colors.black,
+              ),
+            ),
+          ],
         ),
       ),
     );

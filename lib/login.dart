@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:travel_login2/join.dart';
 import 'package:travel_login2/login_complete.dart';
-import 'package:travel_login2/mainPage.dart';
+import 'package:travel_login2/join.dart';
 
 class Login extends StatelessWidget {
   final String name;

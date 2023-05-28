@@ -69,7 +69,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
                     'Travel Plus',
                     style: TextStyle(
                       fontFamily: 'JejuGothic',
-                      fontSize: 30,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),

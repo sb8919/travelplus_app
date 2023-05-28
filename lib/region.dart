@@ -221,8 +221,8 @@ class _RegionState extends State<Region> {
   }
 
   void printSelectedValues() {
-    print('Selected Region: $selectedRegion');
-    print('Selected City: $selectedCity');
+    print('$selectedRegion');
+    print('$selectedCity');
   }
 
   @override

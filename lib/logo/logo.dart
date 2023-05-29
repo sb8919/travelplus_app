@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
-import '../interest/Interests.dart';
+import '../login/login.dart';
 
 class Logo extends StatefulWidget {
   final MySqlConnection conn; // conn 매개변수 추가
@@ -87,7 +87,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (BuildContext context) => InterestsPage(),
+                          builder: (BuildContext context) => Login(),
                         ),
                       );
                     },

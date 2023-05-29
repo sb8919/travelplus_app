@@ -4,6 +4,7 @@ import 'package:travel_login2/login/join.dart';
 import 'package:mysql1/mysql1.dart' as mysql;
 
 class Login extends StatefulWidget {
+
   Login({String? region, String? city});
 
   @override
@@ -78,9 +79,7 @@ class _LoginState extends State<Login> {
     user_pw = passwordController.text;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('로그인을 해주세요.'),
-      ),
+
       body: Stack(
         children: [
           Center(

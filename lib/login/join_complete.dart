@@ -21,7 +21,7 @@ class JoinComplete extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Login(name: '')),
+                  MaterialPageRoute(builder: (context) => Login()),
                 );
               },
               child: Text('로그인 하러가기'),

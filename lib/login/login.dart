@@ -4,9 +4,7 @@ import 'package:travel_login2/login/join.dart';
 import 'package:mysql1/mysql1.dart' as mysql;
 
 class Login extends StatefulWidget {
-  final String name;
-
-  Login({required this.name, String? region, String? city});
+  Login({String? region, String? city});
 
   @override
   _LoginState createState() => _LoginState();
@@ -16,6 +14,9 @@ class _LoginState extends State<Login> {
   TextEditingController idController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool showErrorDialog = false;
+
+  String user_id = ''; // user_id 변수 추가
+  String user_pw = ''; // user_pw 변수 추가
 
   // 데이터베이스에 로그인 정보를 확인하는 메서드
   Future<void> login(String id, String password) async {
@@ -44,7 +45,7 @@ class _LoginState extends State<Login> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => LoginComplete(name: widget.name),
+            builder: (BuildContext context) => LoginComplete(),
           ),
         );
       } else {
@@ -72,6 +73,10 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    // build 메서드 내에서 user_id와 user_pw 값을 설정
+    user_id = idController.text;
+    user_pw = passwordController.text;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('로그인을 해주세요.'),
@@ -128,7 +133,7 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (BuildContext context) => Join(name: widget.name),
+                          builder: (BuildContext context) => Join(),
                         ),
                       );
                     },

@@ -5,9 +5,8 @@ import 'Interests.dart';
 import '../login/login.dart';
 
 class Region extends StatefulWidget {
-  final String name;
 
-  Region({required this.name, required List<String> selectedInterests});
+  Region({required List<String> selectedInterests});
 
   @override
   _RegionState createState() => _RegionState();
@@ -311,7 +310,7 @@ class _RegionState extends State<Region> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Login(name: '',),
+                        builder: (context) => Login(),
                       ),
                     );
                   }

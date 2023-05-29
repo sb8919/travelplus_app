@@ -3,6 +3,7 @@ import 'package:mysql1/mysql1.dart';
 import 'package:travel_login2/interest/region.dart';
 
 class InterestsPage extends StatefulWidget {
+
   @override
   _InterestsPageState createState() => _InterestsPageState();
 }
@@ -117,7 +118,7 @@ class _InterestsPageState extends State<InterestsPage> {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) => Region(
-                          selectedInterests: selectedInterests, name: '',
+                          selectedInterests: selectedInterests,
                         ),
                       ),
                     );

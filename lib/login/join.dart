@@ -5,9 +5,8 @@ import 'login.dart';
 import '../mainPage.dart';
 
 class Join extends StatelessWidget {
-  final String name;
 
-  Join({required this.name});
+  Join();
 
   // 데이터베이스에 회원 정보를 저장하는 메서드
   void saveUserData(String name, String id, String password) async {

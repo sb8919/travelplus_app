@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travel_login2/login/login.dart';
+import 'package:travel_plus/login/login.dart';
 
 class JoinComplete extends StatelessWidget {
   @override

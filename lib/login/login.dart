@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:travel_login2/login/login_complete.dart';
-import 'package:travel_login2/login/join.dart';
+import 'package:travel_plus/login/join.dart';
 import 'package:mysql1/mysql1.dart' as mysql;
+
+import '../mainPage.dart';
 
 class Login extends StatefulWidget {
 
@@ -46,7 +47,7 @@ class _LoginState extends State<Login> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => LoginComplete(),
+            builder: (BuildContext context) => MainPage(),
           ),
         );
       } else {

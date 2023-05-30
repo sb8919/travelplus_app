@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mysql1/mysql1.dart';
-
-import 'package:travel_login2/main.dart';
+import 'package:travel_plus/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

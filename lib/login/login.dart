@@ -6,7 +6,7 @@ import '../mainPage.dart';
 
 class Login extends StatefulWidget {
 
-  Login({String? region, String? city});
+  Login({String? region, String? city, required String name, required String id, required String password, required List<String> interests});
 
   @override
   _LoginState createState() => _LoginState();

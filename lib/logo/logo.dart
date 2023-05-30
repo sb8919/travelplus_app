@@ -87,7 +87,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (BuildContext context) => Login(),
+                          builder: (BuildContext context) => Login(name: '', id: '', password: '', interests: [],),
                         ),
                       );
                     },

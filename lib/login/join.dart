@@ -108,10 +108,6 @@ class _JoinState extends State<Join> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                '회원가입 정보 입력',
-                style: TextStyle(fontSize: 20),
-              ),
               SizedBox(height: 16),
               TextFormField(
                 controller: nameController,

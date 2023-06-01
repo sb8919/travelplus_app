@@ -73,7 +73,7 @@ class _SelectScreenState extends State<SelectScreen> {
 
   getPlaces(){
     return
-      new StaggeredGridView.countBuilder(
+      StaggeredGridView.countBuilder(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),

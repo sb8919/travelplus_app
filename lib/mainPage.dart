@@ -135,7 +135,7 @@ class _FitnessAppHomeScreenState extends State<MainPage>
                 setState(() {
                   tabBody = (BuildContext context) => MediaQuery(
                     data: MediaQuery.of(context).copyWith(),
-                    child: ProfileScreen(animationController: animationController),
+                    child: HistoryScreen(animationController: animationController),
                   );
                 });
               });

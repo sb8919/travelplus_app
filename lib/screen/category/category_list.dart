@@ -87,7 +87,7 @@ class _CategoryListState extends State<CategoryList> with TickerProviderStateMix
                           ),
                         );
                       },
-                      child: Container(
+                      child: SizedBox(
                         height: 216,
                         width: double.infinity,
                         child: Column(

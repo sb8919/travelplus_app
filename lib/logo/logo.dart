@@ -48,7 +48,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
         children: [
           Positioned.fill(
             child: Container(
-              color: Colors.blue, // 배경 색상
+              color: Color(0xFF4B39EF), // 배경 색상 변경
             ),
           ),
           Center(
@@ -87,12 +87,12 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (BuildContext context) => Login(),
+                          builder: (BuildContext context) => Login(name: '', id: '', password: '', interests: [],),
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // 버튼 배경 색상
+                      primary: Color(0xFF4B39EF), // 버튼 배경 색상 변경
                       onPrimary: Colors.white, // 텍스트 색상
                       onSurface: Colors.blueAccent, // 눌렸을 때의 색상
                       shape: RoundedRectangleBorder(

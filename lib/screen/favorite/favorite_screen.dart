@@ -257,84 +257,58 @@ class _FavoriteScreenState extends State<FavoriteScreen>
       ),
     );
   }
-
-  Widget getListUI() {
-    return Container(
-      decoration: BoxDecoration(
-        color: FavoriteListTheme.buildLightTheme().backgroundColor,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              offset: const Offset(0, -2),
-              blurRadius: 8.0),
-        ],
-      ),
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 156 - 50,
-            child: FutureBuilder<bool>(
-              future: getData(),
-              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                if (!snapshot.hasData) {
-                  return const SizedBox();
-                } else {
-                  return ListView.builder(
-                    itemCount: favoriteList.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (BuildContext context, int index) {
-                      final int count =
-                      favoriteList.length > 10 ? 10 : favoriteList.length;
-                      final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                              parent: animationController!,
-                              curve: Interval((1 / count) * index, 1.0,
-                                  curve: Curves.fastOutSlowIn)));
-                      animationController?.forward();
-
-                      return FavoriteListView(
-                        callback: () {},
-                        favoriteData: favoriteList[index],
-                        animation: animation,
-                        animationController: animationController!,
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget getHotelViewList() {
-    final List<Widget> favoriteListViews = <Widget>[];
-    for (int i = 0; i < favoriteList.length; i++) {
-      final int count = favoriteList.length;
-      final Animation<double> animation =
-      Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-          parent: animationController!,
-          curve: Interval((1 / count) * i, 1.0, curve: Curves.fastOutSlowIn),
-        ),
-      );
-      favoriteListViews.add(
-        FavoriteListView(
-          callback: () {},
-          favoriteData: favoriteList[i],
-          animation: animation,
-          animationController: animationController!,
-        ),
-      );
-    }
-    animationController?.forward();
-    return Column(
-      children: favoriteListViews,
-    );
-  }
+  //
+  // Widget getListUI() {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       color: FavoriteListTheme.buildLightTheme().backgroundColor,
+  //       boxShadow: <BoxShadow>[
+  //         BoxShadow(
+  //             color: Colors.grey.withOpacity(0.2),
+  //             offset: const Offset(0, -2),
+  //             blurRadius: 8.0),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       children: <Widget>[
+  //         Container(
+  //           height: MediaQuery.of(context).size.height - 156 - 50,
+  //           child: FutureBuilder<bool>(
+  //             future: getData(),
+  //             builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+  //               if (!snapshot.hasData) {
+  //                 return const SizedBox();
+  //               } else {
+  //                 return ListView.builder(
+  //                   itemCount: favoriteList.length,
+  //                   scrollDirection: Axis.vertical,
+  //                   itemBuilder: (BuildContext context, int index) {
+  //                     final int count =
+  //                     favoriteList.length > 10 ? 10 : favoriteList.length;
+  //                     final Animation<double> animation =
+  //                     Tween<double>(begin: 0.0, end: 1.0).animate(
+  //                         CurvedAnimation(
+  //                             parent: animationController!,
+  //                             curve: Interval((1 / count) * index, 1.0,
+  //                                 curve: Curves.fastOutSlowIn)));
+  //                     animationController?.forward();
+  //
+  //                     return FavoriteListView(
+  //                       callback: () {},
+  //                       favoriteData: favoriteList[index],
+  //                       animation: animation,
+  //                       animationController: animationController!,
+  //                     );
+  //                   },
+  //                 );
+  //               }
+  //             },
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget getAppBarUI() {
     return Container(

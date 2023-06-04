@@ -116,6 +116,14 @@ class _JoinState extends State<Join> {
                 controller: nameController,
                 decoration: InputDecoration(
                   labelText: '이름',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF4B39EF), // 폰트 색상 변경
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF4B39EF), // 밑줄 색상 변경
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 16),
@@ -123,6 +131,14 @@ class _JoinState extends State<Join> {
                 controller: idController,
                 decoration: InputDecoration(
                   labelText: '아이디',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF4B39EF), // 폰트 색상 변경
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF4B39EF), // 밑줄 색상 변경
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 16),
@@ -130,6 +146,14 @@ class _JoinState extends State<Join> {
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: '비밀번호',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF4B39EF), // 폰트 색상 변경
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF4B39EF), // 밑줄 색상 변경
+                    ),
+                  ),
                 ),
                 obscureText: true,
               ),
@@ -138,6 +162,14 @@ class _JoinState extends State<Join> {
                 value: selectedRegion1,
                 decoration: InputDecoration(
                   labelText: '관심지역 (시/도)',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF4B39EF), // 폰트 색상 변경
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF4B39EF), // 밑줄 색상 변경
+                    ),
+                  ),
                 ),
                 items: <String>[
                   '서울특별시', '부산광역시', '인천광역시', '경기도', '강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도',
@@ -156,10 +188,19 @@ class _JoinState extends State<Join> {
                 },
               ),
               SizedBox(height: 16),
+              if (selectedRegion1 != null)
               DropdownButtonFormField<String>(
                 value: selectedRegion2,
                 decoration: InputDecoration(
                   labelText: '관심지역 (구/군)',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF4B39EF), // 폰트 색상 변경
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFF4B39EF), // 밑줄 색상 변경
+                    ),
+                  ),
                 ),
                 items: getRegion2Items(selectedRegion1).map<
                     DropdownMenuItem<String>>((String value) {
@@ -197,6 +238,9 @@ class _JoinState extends State<Join> {
 
                   saveUserData(name, id, password);
                 },
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFF4B39EF),
+                ),
                 child: Text('회원가입'),
               ),
               SizedBox(height: 16),
@@ -209,24 +253,31 @@ class _JoinState extends State<Join> {
 
   Widget buildInterestCheckbox(String label) {
     final bool isChecked = interests.contains(label);
+    final Color borderColor = isChecked ? Color(0xFF4B39EF) : Colors.transparent;
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Checkbox(
-          value: isChecked,
-          onChanged: (bool? value) {
-            setState(() {
-              if (value != null && value) {
-                interests.add(label);
-              } else {
-                interests.remove(label);
-              }
-            });
-          },
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (isChecked) {
+            interests.remove(label);
+          } else {
+            interests.add(label);
+          }
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          border: Border.all(color: borderColor),
+          borderRadius: BorderRadius.circular(30.0),
         ),
-        Text(label),
-      ],
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isChecked ? Color(0xFF4B39EF) : Colors.black,
+          ),
+        ),
+      ),
     );
   }
 

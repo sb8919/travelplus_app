@@ -22,6 +22,13 @@ class _LoginState extends State<Login> {
 
   // 데이터베이스에 로그인 정보를 확인하는 메서드
   Future<void> login(String id, String password) async {
+    if (id.isEmpty || password.isEmpty) {
+      setState(() {
+        showErrorDialog = true;
+      });
+      return;
+    }
+
     final settings = mysql.ConnectionSettings(
       host: 'orion.mokpo.ac.kr',
       port: 8381,
@@ -80,7 +87,6 @@ class _LoginState extends State<Login> {
     user_pw = passwordController.text;
 
     return Scaffold(
-
       body: Stack(
         children: [
           Center(
@@ -90,46 +96,63 @@ class _LoginState extends State<Login> {
                 children: <Widget>[
                   Text(
                     '로그인',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF4B39EF), // 폰트 색상 변경
+                    ),
                   ),
                   SizedBox(height: 16),
-                  // 아이디 입력란
                   SizedBox(
                     width: 200,
-                    child: TextFormField(
+                    child: TextField(
                       controller: idController,
                       decoration: InputDecoration(
                         labelText: '아이디',
+                        labelStyle: TextStyle(
+                          color: Color(0xFF4B39EF), // 폰트 색상 변경
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF4B39EF), // 밑줄 색상 변경
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(height: 16),
-                  // 비밀번호 입력란
                   SizedBox(
                     width: 200,
-                    child: TextFormField(
+                    child: TextField(
                       controller: passwordController,
                       decoration: InputDecoration(
                         labelText: '비밀번호',
+                        labelStyle: TextStyle(
+                          color: Color(0xFF4B39EF), // 폰트 색상 변경
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF4B39EF), // 밑줄 색상 변경
+                          ),
+                        ),
                       ),
                       obscureText: true,
                     ),
                   ),
                   SizedBox(height: 16),
-                  // 로그인 버튼
                   ElevatedButton(
                     onPressed: () {
                       String id = idController.text;
                       String password = passwordController.text;
                       login(id, password);
                     },
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF4B39EF), // 로그인 버튼 색상 변경
+                    ),
                     child: Text('로그인'),
                   ),
                   SizedBox(height: 16),
-                  // 회원가입 버튼
                   TextButton(
                     onPressed: () {
-                      // 회원가입 버튼 동작
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -137,6 +160,9 @@ class _LoginState extends State<Login> {
                         ),
                       );
                     },
+                    style: TextButton.styleFrom(
+                      primary: Color(0xFF4B39EF), // 회원가입 폰트 색상 변경
+                    ),
                     child: Text('회원가입'),
                   ),
                 ],
@@ -149,12 +175,12 @@ class _LoginState extends State<Login> {
                 color: Color.fromRGBO(0, 0, 0, 0.5),
                 child: Center(
                   child: Container(
-                    width: 400, // 다이얼로그 박스의 가로 크기 조정
+                    width: 400,
                     height: 250,
                     child: AlertDialog(
                       title: Text('오류'),
                       content: Center(
-                        child: Text('아이디와 비밀번호가 다릅니다.'),
+                        child: Text('아이디와 비밀번호를 입력해주세요.'),
                       ),
                       actions: [
                         TextButton(

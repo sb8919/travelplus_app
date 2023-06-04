@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'Header.dart';
 import 'title_with_more_btn.dart';
 import 'interest_place.dart';
 import 'HotPlace.dart';
 import 'like_place.dart';
-import 'package:dio/dio.dart';
+import 'package:travel_plus/db/dbcon.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,32 +35,20 @@ class _BodyState extends State<Body> {
   }
 
   Future<List<dynamic>> fetchData() async {
-    final response = await Dio().get('http://orion.mokpo.ac.kr:8481/user_info');
-    if (response.statusCode == 200) {
-      final data = response.data as List<dynamic>;
-      final name = data[2];
-      final theme = data[4];
-      final response_interest_place = await Dio()
-          .get('http://orion.mokpo.ac.kr:8481/place_info?place_theme=$theme');
-      final response_hot_place =
-          await Dio().get('http://orion.mokpo.ac.kr:8481/hot_place');
-      final response_like_place = await Dio()
-          .get('http://orion.mokpo.ac.kr:8481/like_place?user_name=$name');
-      final List<dynamic> interest_place_list =
-          response_interest_place.data.toList();
-      final List<dynamic> hot_place_list = response_hot_place.data.toList();
-      final List<dynamic> like_place_list = response_like_place.data.toList();
-      return [
-        name,
-        theme,
-        interest_place_list,
-        hot_place_list,
-        like_place_list
-      ];
-    } else {
-      throw Exception(
-          'HTTP request failed with status: ${response.statusCode}');
-    }
+    final data = await MainScreenData('burustar');
+    final name = data['userName'];
+    final theme = data['interest_theme'];
+    final interest_place_list = data['recomend_place'];
+    final hot_place_list = data['hot_place_list'];
+    final like_place_list = data['like_place_list'];
+    return [
+      name,
+      theme,
+      interest_place_list,
+      hot_place_list,
+      like_place_list
+    ];
+
   }
 
   @override
@@ -80,7 +69,7 @@ class _BodyState extends State<Body> {
                 } else {
                   final List<dynamic> responseData = snapshot.data!;
                   final String? response_user_name =
-                      responseData[0]; // name 변수로 저장
+                  responseData[0]; // name 변수로 저장
                   final interest_tag = responseData[1]; // place 변수로 저장
                   return Column(
                     children: [

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'data.dart';
 import 'explore_item.dart';
 
@@ -73,19 +72,19 @@ class _SelectScreenState extends State<SelectScreen> {
 
   getPlaces(){
     return
-      new StaggeredGridView.countBuilder(
+      GridView.builder(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        crossAxisCount: 4,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 4,
+          crossAxisSpacing: 4,
+        ),
         itemCount: selectData.length,
-        itemBuilder: (BuildContext context, int index) =>
-            ExploreItem(data: selectData[index],
-            ),
-        staggeredTileBuilder: (int index) =>
-        new StaggeredTile.count(2, index.isEven ? 3 : 2),
-        mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
+        itemBuilder: (BuildContext context, int index) => ExploreItem(
+          data: selectData[index],
+        ),
       );
   }
 

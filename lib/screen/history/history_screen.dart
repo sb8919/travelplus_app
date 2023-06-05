@@ -163,7 +163,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                                 child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start, // 왼쪽 정렬
                                     children:[ Text(
-                                      '나의 여행 히스토리',
+                                      '최근 조회한 장소',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(
                                         fontFamily: main_frame_theme.fontName,
@@ -173,7 +173,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                                         color: main_frame_theme.darkerText,
                                       ),
                                     ),
-                                      Text('그동안 여행했던 곳을 모아봤어요!',
+                                      Text('그동안 조회한 곳을 모아봤어요!',
                                         textAlign: TextAlign.left,)]
                                 ),
                               ),

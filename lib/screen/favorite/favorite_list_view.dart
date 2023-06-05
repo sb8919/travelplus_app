@@ -5,6 +5,7 @@ import 'favorite_list_theme.dart';
 import 'favorite_list_data.dart';
 
 
+
 class FavoriteListView extends StatelessWidget {
   const FavoriteListView(
       {Key? key,

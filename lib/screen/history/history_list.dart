@@ -15,13 +15,9 @@ class HistoryList extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         return FadeTransition(
           opacity: animation!,
-          child: new Transform(
-            transform: new Matrix4.translationValues(
+          child: Transform(
+            transform: Matrix4.translationValues(
                 0.0, 30 * (1.0 - animation!.value), 0.0),
-            child: ListView.builder(
-            itemCount: 3, // 반복할 횟수
-            itemBuilder: (BuildContext context, int index) {
-            return Container(
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 0.0, 0.0),
                 child: Row(
@@ -126,10 +122,6 @@ class HistoryList extends StatelessWidget {
 
                 ),
               ),
-            );
-           },
-            )
-
           ),
         );
       },

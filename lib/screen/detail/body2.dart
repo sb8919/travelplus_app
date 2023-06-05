@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mysql1/mysql1.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,21 +32,47 @@ class Body2 extends StatefulWidget {
 }
 
 class _Body2State extends State<Body2> {
-  final List<List<String>> places = [
-    ['국립중앙박물관', 'https://mblogthumb-phinf.pstatic.net/MjAxNzA0MTlfMjQz/MDAxNDkyNTYzODEyMjM1.asJemRHPvGeTufk03cAV1xVHt49B9bZf1FVaVv9PEJwg.N86ae6g8rEOF0Bziblm-BOiy4HwbNVW_hRo72CCNH2Yg.JPEG.kotfa198643/IMG_0750-01.jpg?type=w800', '서울특별시 종로구 삼청로 37', '문화/역사', '37.582275', '126.975728'],
-    ['서울타워', 'https://media.triple.guide/triple-cms/c_limit,f_auto,h_1024,w_1024/aa5a2b0c-6c55-4353-8837-7fbc84e377bd.jpeg', '서울특별시 용산구 남산공원길 105', '명소/전망대', '37.551510', '126.988018'],
-    ['경복궁', 'https://a.cdn-hotels.com/gdcs/production60/d893/3172bd6f-726c-4561-810f-deec13d17a6e.jpg?impolicy=fcrop&w=800&h=533&q=medium', '서울특별시 종로구 사직로 161', '문화/역사', '37.579621', '126.977011'],
-    // 추가적인 기관들을 원하는 만큼 리스트에 추가할 수 있습니다.
-  ];
+  List<List<String>> places = [];
+  Future<void> MainScreenData({required String user_id}) async {
+    try {
+      final settings = ConnectionSettings(
+        host: 'orion.mokpo.ac.kr',
+        port: 8381,
+        user: 'root',
+        password: 'ScE1234**',
+        db: 'Travelplus',
+      );
+
+      final conn = await MySqlConnection.connect(settings);
+      final like_place_list = await conn.query("SELECT * FROM Place");
+      print(like_place_list);
+      setState(() {
+        places = like_place_list.map<List<String>>((resultRow) {
+          return [
+            resultRow['place_name'],
+            resultRow['place_img_url'],
+            resultRow['place_address'],
+            resultRow['place_theme'],
+            '37.582275',
+            '126.975728',
+          ];
+        }).toList();
+      });
+    } catch (e) {
+      print('Error reading user data: $e');
+      throw Exception('Failed to fetch user data.');
+    }
+  }
 
   final MapController mapController = MapController();
   int selectedIndex = -1;
-  Position? currentPosition; // 현재 위치를 저장할 변수
+  Position? currentPosition;
 
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
+    MainScreenData(user_id: 'test');
   }
 
   void _getCurrentLocation() async {

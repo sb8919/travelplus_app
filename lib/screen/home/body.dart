@@ -35,7 +35,7 @@ class _BodyState extends State<Body> {
   }
 
   Future<List<dynamic>> fetchData() async {
-    final data = await MainScreenData('burustar');
+    final data = await MainScreenData('test');
     final name = data['userName'];
     final theme = data['interest_theme'];
     final interest_place_list = data['recomend_place'];

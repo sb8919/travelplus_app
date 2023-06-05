@@ -53,8 +53,8 @@ class _Body2State extends State<Body2> {
             resultRow['place_img_url'],
             resultRow['place_address'],
             resultRow['place_theme'],
-            '37.582275',
-            '126.975728',
+            resultRow['latitude'].toString(),
+            resultRow['longitude'].toString(),
           ];
         }).toList();
       });
@@ -67,6 +67,7 @@ class _Body2State extends State<Body2> {
   final MapController mapController = MapController();
   int selectedIndex = -1;
   Position? currentPosition;
+  PageController pageController = PageController(viewportFraction: 0.8);
 
   @override
   void initState() {
@@ -82,6 +83,14 @@ class _Body2State extends State<Body2> {
       );
       setState(() {
         currentPosition = position;
+        // 현재 위치로 지도 이동
+        mapController.move(
+          LatLng(
+            currentPosition?.latitude ?? 34.7903335,
+            currentPosition?.longitude ?? 126.3847547,
+          ),
+          15.0,
+        );
       });
     } catch (e) {
       print('Error: $e');
@@ -90,136 +99,170 @@ class _Body2State extends State<Body2> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Expanded(
-          flex: 7,
-          child: FlutterMap(
-            mapController: mapController,
-            options: MapOptions(
-              center: LatLng(
-                currentPosition?.latitude ?? 37.5665,
-                currentPosition?.longitude ?? 126.9780,
-              ),
-              zoom: 12.0,
-              onPositionChanged: (MapPosition position, bool hasGesture) {},
+        FlutterMap(
+          mapController: mapController,
+          options: MapOptions(
+            center: LatLng(
+              currentPosition?.latitude ?? 34.7903335,
+              currentPosition?.longitude ?? 126.3847547,
             ),
-            layers: [
-              TileLayerOptions(
-                urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: ['a', 'b', 'c'],
-              ),
-              MarkerLayerOptions(
-                markers: _buildMarkers(),
-              ),
-            ],
+            zoom: 15.0,
+            onPositionChanged: (MapPosition position, bool hasGesture) {},
           ),
+          layers: [
+            TileLayerOptions(
+              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              subdomains: ['a', 'b', 'c'],
+            ),
+            MarkerLayerOptions(
+              markers: _buildMarkers(),
+              rotate: false,
+            ),
+            CircleLayerOptions(
+              circles: _buildCircles(),
+            ),
+          ],
         ),
-        Expanded(
-          flex: 3,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: places.length,
-            itemBuilder: (context, index) {
-              final place = places[index];
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 390,
-                      decoration: BoxDecoration(
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Container(
+            height: 250,
+            width: MediaQuery.of(context).size.width - 20,
+            child: PageView.builder(
+              controller: pageController,
+              itemCount: places.length,
+              itemBuilder: (context, index) {
+                final place = places[index];
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width - 20,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          blurRadius: 15.0,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = index;
+                          mapController.move(
+                            LatLng(
+                              double.parse(place[4]),
+                              double.parse(place[5]),
+                            ),
+                            15.0,
+                          );
+                        });
+                      },
+                      child: Material(
                         borderRadius: BorderRadius.circular(8.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 15.0,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: GestureDetector(
-                        onTap: (){},
-                        child: Material(
-                          borderRadius: BorderRadius.circular(8.0),
-                          elevation: 0.0,
-                          color: Colors.white, // 배경색을 흰색으로 설정
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(8.0),
-                                  ),
+                        elevation: 0.0,
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(8.0),
                                 ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(8.0),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(8.0),
+                                ),
+                                child: Image.network(
+                                  place[1],
+                                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return CircularProgressIndicator(
+                                      value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                          : null,
+                                    );
+                                  },
+                                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                    return Icon(Icons.error);
+                                  },
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        place[0],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                          height: 2,
+                                        ),
+                                      ),
+                                      Text(
+                                        place[2],
+                                        style: TextStyle(fontSize: 14.0, height: 1.3),
+                                      ),
+                                    ],
                                   ),
-                                  child: Image.network(
-                                    place[1],
-                                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return CircularProgressIndicator(
-                                        value: loadingProgress.expectedTotalBytes != null
-                                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                            : null,
-                                      );
+                                  IconButton(
+                                    icon: Icon(Icons.favorite),
+                                    color: Colors.red,
+                                    onPressed: () {
+                                      // Add your logic here
                                     },
-                                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                                      return Icon(Icons.error);
-                                    },
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
                                   ),
-                                ),
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  place[0],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  place[2],
-                                  style: TextStyle(fontSize: 14.0),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: IconButton(
-                        icon: Icon(Icons.favorite),
-                        color: Colors.red,
-                        onPressed: () {
-                          // Add your logic here
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 255.0,
+          right: 16.0,
+          child: FloatingActionButton(
+            backgroundColor: Colors.white70,
+            onPressed: () {
+              mapController.move(
+                LatLng(
+                  currentPosition?.latitude ?? 34.7903335,
+                  currentPosition?.longitude ?? 126.3847547,
                 ),
+                12.0,
               );
             },
+            child: Icon(Icons.my_location, color: Colors.black87),
           ),
         ),
       ],
     );
   }
-
 
   List<Marker> _buildMarkers() {
     List<Marker> markers = [];
@@ -229,17 +272,36 @@ class _Body2State extends State<Body2> {
       final double latitude = double.parse(place[4]);
       final double longitude = double.parse(place[5]);
       final marker = Marker(
-        width: 30.0,
-        height: 30.0,
+        width: 60.0,
+        height: 60.0,
         point: LatLng(latitude, longitude),
         builder: (context) => Icon(
           i == selectedIndex ? Icons.location_on : Icons.location_on_outlined,
-          color: i == selectedIndex ? Colors.red : Colors.blue,
+          color: i == selectedIndex ? Colors.red : Colors.red,
         ),
       );
       markers.add(marker);
     }
 
     return markers;
+  }
+
+  List<CircleMarker> _buildCircles() {
+    List<CircleMarker> circles = [];
+
+    if (currentPosition != null) {
+      final circle = CircleMarker(
+        point: LatLng(
+          currentPosition!.latitude,
+          currentPosition!.longitude,
+        ),
+        color: Colors.blue.withOpacity(0.8),
+        useRadiusInMeter: true,
+        radius: 50, // 원의 반지름 (미터)
+      );
+      circles.add(circle);
+    }
+
+    return circles;
   }
 }

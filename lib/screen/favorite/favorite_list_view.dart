@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'favorite_list_theme.dart';
-import 'favorite_list_data.dart';
+import 'favorite_screen.dart';
 
 
 
@@ -79,7 +79,7 @@ class FavoriteListView extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              favoriteData!.titleTxt,
+                                              favoriteData!.placeName,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -93,7 +93,7 @@ class FavoriteListView extends StatelessWidget {
                                               MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  favoriteData!.subTxt,
+                                                  favoriteData!.placeAddress,
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       color: Colors.grey
@@ -110,14 +110,12 @@ class FavoriteListView extends StatelessWidget {
                                                       .primaryColor,
                                                 ),
                                                 Expanded(
-                                                  child: Text(
-                                                    '${favoriteData!.dist.toStringAsFixed(1)} km to city',
-                                                    overflow:
-                                                    TextOverflow.ellipsis,
+                                                  child:
+                                                  Text(favoriteData!.placeAddress,
                                                     style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey
-                                                            .withOpacity(0.8)),
+                                                      fontSize: 15,
+                                                      color: Colors.grey
+                                                          .withOpacity(0.8)),
                                                   ),
                                                 ),
                                               ],

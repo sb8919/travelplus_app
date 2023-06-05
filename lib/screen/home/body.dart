@@ -38,7 +38,7 @@ class _BodyState extends State<Body> {
     final data = await MainScreenData('burustar');
     final name = data['userName'];
     final theme = data['interest_theme'];
-    final interest_place_list = data['recomend_place'];
+    final interest_place_list = data['recommend_place'];
     final hot_place_list = data['hot_place_list'];
     final like_place_list = data['like_place_list'];
     return [

@@ -4,16 +4,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'favorite_list_theme.dart';
 import 'favorite_list_data.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 class FavoriteListView extends StatelessWidget {
-  const FavoriteListView(
-      {Key? key,
-        this.favoriteData,
-        this.animationController,
-        this.animation,
-        this.callback})
-      : super(key: key);
+  const FavoriteListView({
+    Key? key,
+    required this.favoriteData,
+    required this.animationController,
+    required this.animation,
+    required this.callback,
+  }) : super(key: key);
 
   final VoidCallback? callback;
   final FavoriteListData? favoriteData;
@@ -55,8 +56,8 @@ class FavoriteListView extends StatelessWidget {
                           children: <Widget>[
                             AspectRatio(
                               aspectRatio: 2,
-                              child: Image.asset(
-                                favoriteData!.imagePath,
+                              child: CachedNetworkImage(
+                                imageUrl: favoriteData!.imagePath,
                                 fit: BoxFit.cover,
                               ),
                             ),

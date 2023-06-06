@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import '../map/PlaceListMap.dart';
 import 'Header.dart';
 import 'title_with_more_btn.dart';
 import 'interest_place.dart';
@@ -15,12 +16,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Body(),
+      home: HomeScreen(user_id: 'example_user_id'),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  final String user_id;
+
+  HomeScreen({required this.user_id});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Body(user_id: user_id),
     );
   }
 }
 
 class Body extends StatefulWidget {
+  final String user_id;
+
+  Body({required this.user_id});
+
   @override
   _BodyState createState() => _BodyState();
 }
@@ -35,7 +53,7 @@ class _BodyState extends State<Body> {
   }
 
   Future<List<dynamic>> fetchData() async {
-    final data = await MainScreenData('test');
+    final data = await MainScreenData(widget.user_id);
     final name = data['userName'];
     final theme = data['interest_theme'];
     final interest_place_list = data['recomend_place'];
@@ -48,7 +66,6 @@ class _BodyState extends State<Body> {
       hot_place_list,
       like_place_list
     ];
-
   }
 
   @override
@@ -74,12 +91,20 @@ class _BodyState extends State<Body> {
                   return Column(
                     children: [
                       Header(
-                          username: response_user_name,
-                          interest_tag: interest_tag),
+                        username: response_user_name,
+                        interest_tag: interest_tag,
+                      ),
                       TitlewithMoreBtn(
                         title: '$response_user_name님을 위한 추천 장소',
                         backgroundColor: Colors.yellow,
-                        press: () {},
+                        press: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlaceListMap(),
+                            ),
+                          );
+                        },
                       ),
                       Align(
                         alignment: Alignment.centerLeft,

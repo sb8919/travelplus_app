@@ -5,10 +5,7 @@ import 'package:travel_plus/screen/history/history_screen.dart';
 import 'package:travel_plus/screen/home/home_screen.dart';
 import 'package:travel_plus/style/main_frame_theme.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
-import 'package:travel_plus/screen/profile/profile_screen.dart';
 import 'package:travel_plus/screen/favorite/favorite_screen.dart';
-import 'package:travel_plus/screen/custom/custom_screen.dart';
-import 'package:travel_plus/login/login.dart';
 
 void main() {
   runApp(MaterialApp(home: MainPage(id: 'user_id',),debugShowCheckedModeBanner: false));
@@ -43,7 +40,7 @@ class _FitnessAppHomeScreenState extends State<MainPage>
         AnimationController(duration: const Duration(milliseconds: 600), vsync: this);
     tabBody = (BuildContext context) => MediaQuery(
       data: MediaQuery.of(context).copyWith(),
-      child: HomeScreen(),
+      child: HomeScreen(user_id: widget.id,),
     );
     super.initState();
   }
@@ -104,7 +101,7 @@ class _FitnessAppHomeScreenState extends State<MainPage>
                 setState(() {
                   tabBody = (BuildContext context) => MediaQuery(
                     data: MediaQuery.of(context).copyWith(),
-                    child: HomeScreen(),
+                    child: HomeScreen(user_id: widget.id,),
                   );
                 });
               });

@@ -46,28 +46,3 @@ Future<Map<String, dynamic>> MainScreenData(String user_id) async {
   }
 }
 
-Future<Map<String, dynamic>> FavoriteScreenData(String user_id) async {
-  try {
-    final settings = ConnectionSettings(
-      host: 'orion.mokpo.ac.kr',
-      port: 8381,
-      user: 'root',
-      password: 'ScE1234**',
-      db: 'Travelplus',
-    );
-
-    final conn = await MySqlConnection.connect(settings);
-
-    final favorite_list = (await conn.query(
-        "SELECT * FROM Place Place WHERE place_likes > 0 ORDER BY place_likes DESC;"))
-        .toList();
-
-    return {
-      'favorite_pressed' : favorite_list,
-    };
-
-  } catch (e) {
-    print('Favorite Screen Error reading user data: $e');
-    throw Exception('Favorite Screen Failed to fetch user data.');
-  }
-}

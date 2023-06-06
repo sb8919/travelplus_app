@@ -1,9 +1,10 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'favorite_list_data.dart';
 import 'favorite_list_theme.dart';
-import 'favorite_screen.dart';
-
+import 'favorite_list_data.dart';
 
 
 class FavoriteListView extends StatelessWidget {
@@ -55,9 +56,11 @@ class FavoriteListView extends StatelessWidget {
                           children: <Widget>[
                             AspectRatio(
                               aspectRatio: 2,
-                              child: Image.asset(
-                                favoriteData!.imagePath,
+                              child: CachedNetworkImage(
+                                imageUrl: favoriteData!.imagePath, // Replace with your image URL property
                                 fit: BoxFit.cover,
+                                placeholder: (context, url) => CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
                               ),
                             ),
                             Container(
@@ -79,7 +82,7 @@ class FavoriteListView extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              favoriteData!.placeName,
+                                              favoriteData!.titleTxt,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -93,7 +96,7 @@ class FavoriteListView extends StatelessWidget {
                                               MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  favoriteData!.placeAddress,
+                                                  favoriteData!.subTxt,
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       color: Colors.grey
@@ -110,12 +113,14 @@ class FavoriteListView extends StatelessWidget {
                                                       .primaryColor,
                                                 ),
                                                 Expanded(
-                                                  child:
-                                                  Text(favoriteData!.placeAddress,
+                                                  child: Text(
+                                                    '${favoriteData!.dist.toStringAsFixed(1)} km to city',
+                                                    overflow:
+                                                    TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.grey
-                                                          .withOpacity(0.8)),
+                                                        fontSize: 14,
+                                                        color: Colors.grey
+                                                            .withOpacity(0.8)),
                                                   ),
                                                 ),
                                               ],

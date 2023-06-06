@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-
-import '../favorite/favorite_list_data.dart';
-import '../favorite/favorite_screen.dart';
 import 'profile_update.dart';
 
 
@@ -18,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin {
   AnimationController? animationController;
-  List<FavoriteListData> hotelList = FavoriteListData.favoriteList;
+
   final ScrollController _scrollController = ScrollController();
 
   final scaffoldKey = GlobalKey<ScaffoldState>();

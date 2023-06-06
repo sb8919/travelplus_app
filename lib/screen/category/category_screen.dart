@@ -7,7 +7,6 @@ class CategoryScreen extends StatefulWidget {
   const CategoryScreen({Key? key, this.animationController}) : super(key: key);
 
   final AnimationController? animationController;
-
   @override
   _CategoryScreenState createState() => _CategoryScreenState();
 }

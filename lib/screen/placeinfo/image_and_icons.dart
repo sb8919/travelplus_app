@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travel_plus/screen/detail/IconCard.dart';
+import 'package:travel_plus/screen/placeinfo/IconCard.dart';
 
 class ImageAndicons extends StatelessWidget {
   const ImageAndicons({

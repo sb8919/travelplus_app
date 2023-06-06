@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:travel_plus/screen/detail/body.dart';
-import 'package:travel_plus/screen/detail/body2.dart';
+import 'package:travel_plus/screen/map/PlaceListMap.dart';
 
-class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({Key? key}) : super(key: key);
+class MapScreen extends StatelessWidget {
+  const MapScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +10,7 @@ class DetailsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          'Travelplus',
+          '추천장소',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -26,7 +25,7 @@ class DetailsScreen extends StatelessWidget {
           },
         ),
       ),
-      body:Body2(),
+      body:PlaceListMap(),
     );
   }
 }

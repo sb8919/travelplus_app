@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:travel_plus/login/join.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mysql1/mysql1.dart' as mysql;
-
 import '../mainPage.dart';
+import 'join.dart';
 
 class Login extends StatefulWidget {
+  final String name;
+  final String id;
+  final String password;
+  final List<String> interests;
 
-  Login({String? region, String? city, required String name, required String id, required String password, required List<String> interests});
+  Login({
+    required this.name,
+    required this.id,
+    required this.password,
+    required this.interests,
+  });
 
   @override
   _LoginState createState() => _LoginState();
@@ -16,11 +25,35 @@ class _LoginState extends State<Login> {
   TextEditingController idController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool showErrorDialog = false;
+  bool isLoggedIn = false;
 
   String user_id = ''; // user_id 변수 추가
   String user_pw = ''; // user_pw 변수 추가
 
-  // 데이터베이스에 로그인 정보를 확인하는 메서드
+  @override
+  void initState() {
+    super.initState();
+    checkLoginStatus();
+  }
+
+  void checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    if (isLoggedIn) {
+      navigateToNextScreen();
+    }
+  }
+
+  void saveLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+  }
+
+  void clearLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+  }
+
   Future<void> login(String id, String password) async {
     if (id.isEmpty || password.isEmpty) {
       setState(() {
@@ -46,46 +79,45 @@ class _LoginState extends State<Login> {
       );
 
       if (result.isNotEmpty) {
-        // 로그인 성공
+        saveLoginStatus();
         print('로그인 성공');
-        // 로그인 성공에 따른 처리를 추가하세요.
 
-        // 로그인 성공 시 LoginComplete 페이지로 이동
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => MainPage(),
+            builder: (BuildContext context) => MainPage(id: id),
           ),
         );
       } else {
-        // 로그인 실패
         print('로그인 실패');
-        // 로그인 실패에 따른 처리를 추가하세요.
         setState(() {
-          showErrorDialog = true; // 다이얼로그 창을 보여주도록 상태 변경
+          showErrorDialog = true;
         });
       }
     } catch (e) {
-      // 예외 처리
       print('로그인 에러: $e');
-      // 예외 처리에 따른 메시지나 로그를 출력하세요.
     } finally {
-      await conn.close(); // 연결 종료
+      await conn.close();
     }
   }
 
   void dismissErrorDialog() {
     setState(() {
-      showErrorDialog = false; // 다이얼로그 창을 닫도록 상태 변경
+      showErrorDialog = false;
     });
+  }
+
+  void navigateToNextScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => MainPage(id: idController.text),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // build 메서드 내에서 user_id와 user_pw 값을 설정
-    user_id = idController.text;
-    user_pw = passwordController.text;
-
     return Scaffold(
       body: Stack(
         children: [
@@ -98,7 +130,7 @@ class _LoginState extends State<Login> {
                     '로그인',
                     style: TextStyle(
                       fontSize: 20,
-                      color: Color(0xFF4B39EF), // 폰트 색상 변경
+                      color: Color(0xFF4B39EF),
                     ),
                   ),
                   SizedBox(height: 16),
@@ -109,11 +141,11 @@ class _LoginState extends State<Login> {
                       decoration: InputDecoration(
                         labelText: '아이디',
                         labelStyle: TextStyle(
-                          color: Color(0xFF4B39EF), // 폰트 색상 변경
+                          color: Color(0xFF4B39EF),
                         ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Color(0xFF4B39EF), // 밑줄 색상 변경
+                            color: Color(0xFF4B39EF),
                           ),
                         ),
                       ),
@@ -127,11 +159,11 @@ class _LoginState extends State<Login> {
                       decoration: InputDecoration(
                         labelText: '비밀번호',
                         labelStyle: TextStyle(
-                          color: Color(0xFF4B39EF), // 폰트 색상 변경
+                          color: Color(0xFF4B39EF),
                         ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Color(0xFF4B39EF), // 밑줄 색상 변경
+                            color: Color(0xFF4B39EF),
                           ),
                         ),
                       ),
@@ -146,7 +178,7 @@ class _LoginState extends State<Login> {
                       login(id, password);
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF4B39EF), // 로그인 버튼 색상 변경
+                      primary: Color(0xFF4B39EF),
                     ),
                     child: Text('로그인'),
                   ),
@@ -161,7 +193,7 @@ class _LoginState extends State<Login> {
                       );
                     },
                     style: TextButton.styleFrom(
-                      primary: Color(0xFF4B39EF), // 회원가입 폰트 색상 변경
+                      primary: Color(0xFF4B39EF),
                     ),
                     child: Text('회원가입'),
                   ),

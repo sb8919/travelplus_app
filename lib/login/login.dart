@@ -27,8 +27,10 @@ class _LoginState extends State<Login> {
   bool showErrorDialog = false;
   bool isLoggedIn = false;
 
-  String user_id = ''; // user_id 변수 추가
-  String user_pw = ''; // user_pw 변수 추가
+  String user_id = '';
+  String user_pw = '';
+
+  SharedPreferences? prefs;
 
   @override
   void initState() {
@@ -37,21 +39,22 @@ class _LoginState extends State<Login> {
   }
 
   void checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    prefs = await SharedPreferences.getInstance();
+    isLoggedIn = prefs?.getBool('isLoggedIn') ?? false;
+    user_id = prefs?.getString('user_id') ?? '';
     if (isLoggedIn) {
       navigateToNextScreen();
     }
   }
 
   void saveLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', true);
+    await prefs?.setBool('isLoggedIn', true);
+    await prefs?.setString('user_id', user_id);
   }
 
   void clearLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
+    await prefs?.remove('isLoggedIn');
+    await prefs?.remove('user_id');
   }
 
   Future<void> login(String id, String password) async {
@@ -79,6 +82,7 @@ class _LoginState extends State<Login> {
       );
 
       if (result.isNotEmpty) {
+        user_id = id;
         saveLoginStatus();
         print('로그인 성공');
 
@@ -111,7 +115,7 @@ class _LoginState extends State<Login> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => MainPage(id: idController.text),
+        builder: (BuildContext context) => MainPage(id: user_id),
       ),
     );
   }
@@ -167,6 +171,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
+                      obscuringCharacter: '●', // ● 문자로 대체
                       obscureText: true,
                     ),
                   ),

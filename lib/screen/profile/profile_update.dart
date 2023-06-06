@@ -215,6 +215,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                     ),
                   ),
                 ),
+                obscuringCharacter: '●', // ● 문자로 대체
                 obscureText: true,
               ),
               SizedBox(height: 16),

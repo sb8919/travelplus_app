@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:travel_plus/screen/detail/IconCard.dart';
-import 'package:travel_plus/screen/detail/image_and_icons.dart';
+import 'package:travel_plus/screen/placeinfo/IconCard.dart';
+import 'package:travel_plus/screen/placeinfo/image_and_icons.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);

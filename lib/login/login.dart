@@ -5,8 +5,17 @@ import 'package:mysql1/mysql1.dart' as mysql;
 import '../mainPage.dart';
 
 class Login extends StatefulWidget {
+  final String name;
+  final String id;
+  final String password;
+  final List<String> interests;
 
-  Login({String? region, String? city, required String name, required String id, required String password, required List<String> interests});
+  Login({
+    required this.name,
+    required this.id,
+    required this.password,
+    required this.interests,
+  });
 
   @override
   _LoginState createState() => _LoginState();
@@ -54,7 +63,7 @@ class _LoginState extends State<Login> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => MainPage(),
+            builder: (BuildContext context) => MainPage(id: id),
           ),
         );
       } else {

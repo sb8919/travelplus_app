@@ -28,7 +28,6 @@ Future<Map<String, dynamic>> MainScreenData(String user_id) async {
 
     return {
       'recomend_place': recomend_place,
-      'interest_theme': interest_theme[0].toString(),
       'hot_place_list': hot_place_list,
       'like_place_list': like_place_list,
       'userName': userName,

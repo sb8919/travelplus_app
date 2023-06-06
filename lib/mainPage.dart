@@ -7,14 +7,12 @@ import 'package:travel_plus/style/main_frame_theme.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'package:travel_plus/screen/favorite/favorite_screen.dart';
 
+
 void main() {
-  runApp(MaterialApp(home: MainPage(id: 'user_id',),debugShowCheckedModeBanner: false));
+  runApp(MaterialApp(home: MainPage(),debugShowCheckedModeBanner: false));
 }
 
 class MainPage extends StatefulWidget {
-  final String id;
-  MainPage({required this.id});
-
   @override
   _FitnessAppHomeScreenState createState() => _FitnessAppHomeScreenState();
 }
@@ -40,7 +38,7 @@ class _FitnessAppHomeScreenState extends State<MainPage>
         AnimationController(duration: const Duration(milliseconds: 600), vsync: this);
     tabBody = (BuildContext context) => MediaQuery(
       data: MediaQuery.of(context).copyWith(),
-      child: HomeScreen(user_id: widget.id,),
+      child: HomeScreen(),
     );
     super.initState();
   }
@@ -53,7 +51,6 @@ class _FitnessAppHomeScreenState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
-    print("User ID: ${widget.id}");
 
     return Container(
       color: main_frame_theme.background,
@@ -101,7 +98,7 @@ class _FitnessAppHomeScreenState extends State<MainPage>
                 setState(() {
                   tabBody = (BuildContext context) => MediaQuery(
                     data: MediaQuery.of(context).copyWith(),
-                    child: HomeScreen(user_id: widget.id,),
+                    child: HomeScreen(),
                   );
                 });
               });

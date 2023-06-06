@@ -28,6 +28,7 @@ Future<Map<String, dynamic>> MainScreenData(String user_id) async {
 
     return {
       'recomend_place': recomend_place,
+      'interest_theme': interest_theme.toString().replaceAll('[', '').replaceAll(']', ''),
       'hot_place_list': hot_place_list,
       'like_place_list': like_place_list,
       'userName': userName,
@@ -37,4 +38,3 @@ Future<Map<String, dynamic>> MainScreenData(String user_id) async {
     throw Exception('Failed to fetch user data.');
   }
 }
-

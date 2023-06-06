@@ -3,6 +3,7 @@ import 'package:travel_plus/bottom_navigation_view/tabIcon_data.dart';
 import 'package:travel_plus/screen/category/category_screen.dart';
 import 'package:travel_plus/screen/history/history_screen.dart';
 import 'package:travel_plus/screen/home/home_screen.dart';
+import 'package:travel_plus/screen/profile/profile_screen.dart';
 import 'package:travel_plus/style/main_frame_theme.dart';
 import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'package:travel_plus/screen/favorite/favorite_screen.dart';
@@ -17,10 +18,10 @@ class MainPage extends StatefulWidget {
   MainPage({required this.id});
 
   @override
-  _FitnessAppHomeScreenState createState() => _FitnessAppHomeScreenState();
+  _MainPageScreenState createState() => _MainPageScreenState();
 }
 
-class _FitnessAppHomeScreenState extends State<MainPage>
+class _MainPageScreenState extends State<MainPage>
     with TickerProviderStateMixin {
   AnimationController? animationController;
 
@@ -137,7 +138,7 @@ class _FitnessAppHomeScreenState extends State<MainPage>
                 setState(() {
                   tabBody = (BuildContext context) => MediaQuery(
                     data: MediaQuery.of(context).copyWith(),
-                    child: HistoryScreen(animationController: animationController),
+                    child: ProfileScreen(animationController: animationController),
                   );
                 });
               });

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../detail/detail_screen.dart';
+import '../placeinfo/place_info_screen.dart';
 
 class InterestPlace extends StatelessWidget {
   const InterestPlace({
@@ -32,7 +32,7 @@ class InterestPlace extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailsScreen(),
+                    builder: (context) => PlaceInfoScreen(),
                   ),
                 );
               },

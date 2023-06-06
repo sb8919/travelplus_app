@@ -12,26 +12,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Map Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Map Example'),
+          title: Text('상세보기'),
         ),
-        body: Body2(),
+        body: PlaceListMap(),
       ),
     );
   }
 }
 
-class Body2 extends StatefulWidget {
+class PlaceListMap extends StatefulWidget {
   @override
-  _Body2State createState() => _Body2State();
+  _PlaceListMapState createState() => _PlaceListMapState();
 }
 
-class _Body2State extends State<Body2> {
+class _PlaceListMapState extends State<PlaceListMap> {
   List<List<String>> places = [];
   Future<void> MainScreenData({required String user_id}) async {
     try {
@@ -45,7 +41,6 @@ class _Body2State extends State<Body2> {
 
       final conn = await MySqlConnection.connect(settings);
       final like_place_list = await conn.query("SELECT * FROM Place");
-      print(like_place_list);
       setState(() {
         places = like_place_list.map<List<String>>((resultRow) {
           return [
@@ -254,7 +249,7 @@ class _Body2State extends State<Body2> {
                   currentPosition?.latitude ?? 34.7903335,
                   currentPosition?.longitude ?? 126.3847547,
                 ),
-                12.0,
+                15.0,
               );
             },
             child: Icon(Icons.my_location, color: Colors.black87),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../detail/detail_screen.dart';
+import '../map/map_screen.dart';
 
 class LikePlace extends StatelessWidget {
   const LikePlace({
@@ -42,7 +42,7 @@ class LikePlace extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailsScreen(),
+                    builder: (context) => MapScreen(),
                   ),
                 );
               },

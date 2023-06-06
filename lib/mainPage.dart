@@ -8,12 +8,16 @@ import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'package:travel_plus/screen/profile/profile_screen.dart';
 import 'package:travel_plus/screen/favorite/favorite_screen.dart';
 import 'package:travel_plus/screen/custom/custom_screen.dart';
+import 'package:travel_plus/login/login.dart';
 
 void main() {
-  runApp(MaterialApp(home: MainPage(),debugShowCheckedModeBanner: false));
+  runApp(MaterialApp(home: MainPage(id: 'user_id',),debugShowCheckedModeBanner: false));
 }
 
 class MainPage extends StatefulWidget {
+  final String id;
+  MainPage({required this.id});
+
   @override
   _FitnessAppHomeScreenState createState() => _FitnessAppHomeScreenState();
 }
@@ -52,6 +56,7 @@ class _FitnessAppHomeScreenState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
+    print("User ID: ${widget.id}");
 
     return Container(
       color: main_frame_theme.background,

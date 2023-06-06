@@ -116,6 +116,7 @@ class _JoinState extends State<Join> {
                     ),
                   ),
                 ),
+                keyboardType: TextInputType.text, // 한글 키패드 표시 설정
               ),
               SizedBox(height: 16),
               TextFormField(

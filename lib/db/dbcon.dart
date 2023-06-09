@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 
 Future<Map<String, dynamic>> MainScreenData(String user_id) async {
@@ -19,12 +18,9 @@ Future<Map<String, dynamic>> MainScreenData(String user_id) async {
     final interest_theme = user_info
         .map((row) => row['interest_theme'] as String)
         .toList()[0].split(", ");
-    final user_like_place = user_info
-        .map((row) => row['like_place'] as String)
-        .toList()[0].split(", ");
     final recomend_place = (await conn.query("SELECT * FROM Place WHERE place_theme IN ('${interest_theme.join("', '")}')")).toList();
     final hot_place_list = (await conn.query("SELECT * FROM Place Place WHERE place_likes > 0 ORDER BY place_likes DESC;")).toList();
-    final like_place_list = (await conn.query("SELECT * FROM Place WHERE place_name IN ('${user_like_place.join("', '")}')")).toList();
+    final like_place_list = (await conn.query("SELECT * FROM Place WHERE place_name IN (SELECT like_place FROM User_Likes WHERE user_id='$user_id')")).toList();
 
     return {
       'recomend_place': recomend_place,

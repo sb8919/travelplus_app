@@ -129,16 +129,7 @@ class interest_place extends StatelessWidget {
                 ),
               ],
             ),
-            Positioned(
-              top: -5,
-              right: -5,
-              child: IconButton(
-                onPressed: () {
-                  // 여기에 좋아요 작동 버튼 로직 대입
-                },
-                icon: Icon(Icons.favorite, color: Colors.red), // Heart icon
-              ),
-            ),
+
           ],
         ),
       ),

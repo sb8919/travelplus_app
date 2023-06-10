@@ -2,19 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../db/likecon.dart';
 import '../map/map_screen.dart';
+import '../placeinfo/place_info_screen.dart';
 import 'body.dart';
 
-class LikePlace extends StatelessWidget {
+class LikePlace extends StatefulWidget {
   const LikePlace({
     Key? key,
     required this.placelist,
+    required this.user_id,
   }) : super(key: key);
 
   final List placelist;
+  final String user_id;
+
+  @override
+  _LikePlaceState createState() => _LikePlaceState();
+}
+
+class _LikePlaceState extends State<LikePlace> {
+  void _removePlace(int index, userid, place_name) {
+    deleteLikePlace(userId: userid, place: place_name);
+    setState(() {
+      widget.placelist.removeAt(index);
+    });
+
+  }
+  void _addPlaceToList(int index, userid, place_name) {
+    setState(() {
+      widget.placelist.add(place_name);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (placelist.isEmpty) {
+    if (widget.placelist.isEmpty) {
       return Padding(
         padding: const EdgeInsets.only(top: 30, bottom: 30),
         child: Center(
@@ -31,7 +52,8 @@ class LikePlace extends StatelessWidget {
         ),
         child: Wrap(
           alignment: WrapAlignment.start,
-          children: placelist.map<Widget>((place) {
+          children: List.generate(widget.placelist.length, (index) {
+            var place = widget.placelist[index];
             String image = place[4].toString();
             String place_name = place[0].toString();
             String place_theme = place[2].toString();
@@ -44,49 +66,40 @@ class LikePlace extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MapScreen(),
+                    builder: (context) => PlaceInfoScreen(),
                   ),
                 );
               },
+              remove: () {
+                _removePlace(index,widget.user_id,place_name);
+              },
             );
-          }).toList(),
+          }),
         ),
       ),
     );
   }
 }
 
-class LikePlaceItem extends StatefulWidget {
+class LikePlaceItem extends StatelessWidget {
   const LikePlaceItem({
     Key? key,
     required this.image,
     required this.place_name,
     required this.place_theme,
     required this.press,
+    required this.remove,
   }) : super(key: key);
 
   final String image, place_name, place_theme;
   final VoidCallback press;
-
-  @override
-  _LikePlaceItemState createState() => _LikePlaceItemState();
-}
-
-class _LikePlaceItemState extends State<LikePlaceItem> {
-  bool isFavorite = false;
-
-  void toggleFavorite() {
-    setState(() {
-      isFavorite = !isFavorite;
-    });
-  }
-
+  final VoidCallback remove;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: widget.press,
+      onTap: press,
       child: Container(
         margin: EdgeInsets.only(
           left: 16,
@@ -112,13 +125,13 @@ class _LikePlaceItemState extends State<LikePlaceItem> {
                       topRight: Radius.circular(10),
                     ),
                     child: CachedNetworkImage(
-                      imageUrl: widget.image,
+                      imageUrl: image,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: widget.press,
+                  onTap: press,
                   child: Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -135,11 +148,11 @@ class _LikePlaceItemState extends State<LikePlaceItem> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: "${widget.place_name}\n",
+                                  text: "${place_name}\n",
                                   style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
-                                  text: "${widget.place_theme}",
+                                  text: "${place_theme}",
                                   style: TextStyle(
                                     color: Colors.grey.withOpacity(0.9),
                                     fontSize: 10,
@@ -159,13 +172,10 @@ class _LikePlaceItemState extends State<LikePlaceItem> {
               top: -5,
               right: -5,
               child: IconButton(
-                onPressed: () {
-                  toggleFavorite();
-                  deleteLikePlace(userId: 'test', place: '목포자연사박물관');
-                },
+                onPressed: remove,
                 icon: Icon(
                   Icons.favorite,
-                  color: isFavorite ? Colors.red : Colors.white,
+                  color: Colors.red,
                 ),
               ),
             ),

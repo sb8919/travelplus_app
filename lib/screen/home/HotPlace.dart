@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import '../map/map_screen.dart';
+import '../placeinfo/place_info_screen.dart';
 
 class HotPlace extends StatelessWidget {
   const HotPlace({
@@ -34,7 +35,7 @@ class HotPlace extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MapScreen(),
+                    builder: (context) => PlaceInfoScreen(),
                   ),
                 );
               },

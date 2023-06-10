@@ -4,29 +4,22 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mysql1/mysql1.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import '../../db/likecon.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: PlaceListMap(),
-      ),
-    );
-  }
-}
 
 class PlaceListMap extends StatefulWidget {
+  final String user_id;
+
+  const PlaceListMap({Key? key, required this.user_id}) : super(key: key);
+
+
   @override
   _PlaceListMapState createState() => _PlaceListMapState();
 }
 
 class _PlaceListMapState extends State<PlaceListMap> {
   List<List<String>> places = [];
-  Future<void> MainScreenData({required String user_id}) async {
+  Future<void> MainScreenData() async {
     try {
       final settings = ConnectionSettings(
         host: 'orion.mokpo.ac.kr',
@@ -65,9 +58,8 @@ class _PlaceListMapState extends State<PlaceListMap> {
   void initState() {
     super.initState();
     _getCurrentLocation();
-    MainScreenData(user_id: 'test');
+    MainScreenData();
   }
-
   void _getCurrentLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
@@ -216,10 +208,20 @@ class _PlaceListMapState extends State<PlaceListMap> {
                                     ],
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.favorite),
+                                    icon: Icon(selectedIndex == places.indexOf(place) ? Icons.favorite : Icons.favorite_border),
                                     color: Colors.red,
-                                    onPressed: () {
-                                      // Add your logic here
+                                    onPressed: () async {
+                                      final likePlaceCount = await ifLikePlace(userId: widget.user_id, place: place[0]);
+
+                                      if (likePlaceCount == 0) {
+                                        addLikePlace(userId: widget.user_id, place: place[0]);
+                                      } else {
+                                        deleteLikePlace(userId: widget.user_id, place: place[0]);
+                                      }
+
+                                      setState(() {
+                                        selectedIndex = likePlaceCount == 0 ? places.indexOf(place) : -1;
+                                      });
                                     },
                                   ),
                                 ],

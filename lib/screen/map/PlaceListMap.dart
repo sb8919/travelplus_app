@@ -208,19 +208,31 @@ class _PlaceListMapState extends State<PlaceListMap> {
                                     ],
                                   ),
                                   IconButton(
-                                    icon: Icon(selectedIndex == places.indexOf(place) ? Icons.favorite : Icons.favorite_border),
+                                    icon: FutureBuilder<int>(
+                                      future: ifLikePlace(userId: widget.user_id, place: place[0]),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          var likePlaceCount = snapshot.data!;
+                                          final icon = likePlaceCount == 0 ? Icons.favorite_border : Icons.favorite;
+                                          return Icon(icon);
+                                        } else {
+                                          return Icon(Icons.favorite_border); // 데이터가 아직 로딩 중인 경우 기본 아이콘 표시
+                                        }
+                                      },
+                                    ),
                                     color: Colors.red,
                                     onPressed: () async {
-                                      final likePlaceCount = await ifLikePlace(userId: widget.user_id, place: place[0]);
-
+                                      var likePlaceCount = await ifLikePlace(userId: widget.user_id, place: place[0]);
                                       if (likePlaceCount == 0) {
                                         addLikePlace(userId: widget.user_id, place: place[0]);
+                                        likePlaceCount = 1;
                                       } else {
                                         deleteLikePlace(userId: widget.user_id, place: place[0]);
+                                        likePlaceCount = 0;
                                       }
 
                                       setState(() {
-                                        selectedIndex = likePlaceCount == 0 ? places.indexOf(place) : -1;
+                                        // 상태 업데이트
                                       });
                                     },
                                   ),

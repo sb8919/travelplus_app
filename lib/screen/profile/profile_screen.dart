@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../favorite/favorite_list_data.dart';
 import 'profile_update.dart';
-import 'package:travel_plus/login/login.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key, this.animationController}) : super(key: key);
@@ -17,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin {
   AnimationController? animationController;
-  List<FavoriteListData> hotelList = FavoriteListData.favoriteList;
+
   final ScrollController _scrollController = ScrollController();
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -41,20 +37,6 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     super.dispose();
   }
 
-  void clearLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-  }
-
-  Future<void> handleLogout() async {
-    clearLoginStatus();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => Login(name: '', id: '', password: '', interests: [])),
-          (route) => false,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                     borderRadius: BorderRadius.circular(50.0),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(2.0),
+                    padding: EdgeInsetsDirectional.fromSTEB(2.0, 2.0, 2.0, 2.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(60.0),
                       child: Image.asset(
@@ -87,11 +69,11 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 12.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                   child: Text('상붐이'),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 4.0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                   child: Text('sb8919@gmail.com'),
                 ),
                 Divider(
@@ -131,11 +113,6 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                     // 설정 버튼을 눌렀을 때 처리할 기능을 구현합니다.
                   },
                 ),
-                buildButton(
-                  icon: Icons.logout,
-                  text: '로그아웃',
-                  onTap: handleLogout,
-                ),
               ],
             ),
           ),
@@ -146,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
 
   Widget buildButton({required IconData icon, required String text, required VoidCallback onTap}) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 0.0),
+      padding: EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
       child: Material(
         color: Color(0xFFF2F3F8),
         elevation: 1.0,
@@ -163,12 +140,12 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
               border: Border.all(width: 1.0, color: Colors.grey),
             ),
             child: Padding(
-              padding: EdgeInsets.fromLTRB(8.0, 12.0, 8.0, 12.0),
+              padding: EdgeInsetsDirectional.fromSTEB(8.0, 12.0, 8.0, 12.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 0.0),
+                    padding: EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 0.0, 0.0),
                     child: Icon(
                       icon,
                       color: Color(0xFF4B39EF),
@@ -176,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(12.0, 0.0, 0.0, 0.0),
+                    padding: EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
                     child: Text(text),
                   ),
                 ],

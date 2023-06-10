@@ -88,6 +88,7 @@ class _BodyState extends State<Body> {
                   final String? response_user_name =
                   responseData[0]; // name 변수로 저장
                   final interest_tag = responseData[1]; // place 변수로 저장
+                  print(responseData);
                   return Column(
                     children: [
                       Header(

@@ -171,6 +171,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
+                      obscuringCharacter: '●', // ● 문자로 대체
                       obscureText: true,
                     ),
                   ),

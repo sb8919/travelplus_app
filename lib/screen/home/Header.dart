@@ -43,6 +43,7 @@ class Header extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        SizedBox(height:8,),
                         Text(
                           '현재 $username님 관심사는 $interest_tag 입니다!',
                           style: TextStyle(

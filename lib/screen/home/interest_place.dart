@@ -101,13 +101,6 @@ class interest_place extends StatelessWidget {
                         bottomLeft: Radius.circular(10),
                         bottomRight: Radius.circular(10),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0, 10),
-                          blurRadius: 10,
-                          color: Colors.black.withOpacity(0.13),
-                        ),
-                      ],
                     ),
                     child: Row(
                       children: [
@@ -143,12 +136,13 @@ class interest_place extends StatelessWidget {
                 onPressed: () {
                   // 여기에 좋아요 작동 버튼 로직 대입
                 },
-                icon: Icon(Icons.favorite,color: Colors.red,), // Heart icon
+                icon: Icon(Icons.favorite, color: Colors.red), // Heart icon
               ),
             ),
           ],
         ),
       ),
     );
+
   }
 }

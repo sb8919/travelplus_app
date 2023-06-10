@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../db/likecon.dart';
 import '../map/map_screen.dart';
+import 'body.dart';
 
 class LikePlace extends StatelessWidget {
   const LikePlace({
@@ -14,7 +16,7 @@ class LikePlace extends StatelessWidget {
   Widget build(BuildContext context) {
     if (placelist.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.only(top:30,bottom:30),
+        padding: const EdgeInsets.only(top: 30, bottom: 30),
         child: Center(
           child: Text('좋아요 누른 장소가 없습니다.'),
         ),
@@ -54,7 +56,7 @@ class LikePlace extends StatelessWidget {
   }
 }
 
-class LikePlaceItem extends StatelessWidget {
+class LikePlaceItem extends StatefulWidget {
   const LikePlaceItem({
     Key? key,
     required this.image,
@@ -67,10 +69,24 @@ class LikePlaceItem extends StatelessWidget {
   final VoidCallback press;
 
   @override
+  _LikePlaceItemState createState() => _LikePlaceItemState();
+}
+
+class _LikePlaceItemState extends State<LikePlaceItem> {
+  bool isFavorite = false;
+
+  void toggleFavorite() {
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: press,
+      onTap: widget.press,
       child: Container(
         margin: EdgeInsets.only(
           left: 16,
@@ -96,13 +112,13 @@ class LikePlaceItem extends StatelessWidget {
                       topRight: Radius.circular(10),
                     ),
                     child: CachedNetworkImage(
-                      imageUrl: image,
+                      imageUrl: widget.image,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: press,
+                  onTap: widget.press,
                   child: Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -111,13 +127,6 @@ class LikePlaceItem extends StatelessWidget {
                         bottomLeft: Radius.circular(10),
                         bottomRight: Radius.circular(10),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0, 10),
-                          blurRadius: 10,
-                          color: Colors.black.withOpacity(0.13),
-                        ),
-                      ],
                     ),
                     child: Row(
                       children: [
@@ -126,11 +135,11 @@ class LikePlaceItem extends StatelessWidget {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: "$place_name\n",
+                                  text: "${widget.place_name}\n",
                                   style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 TextSpan(
-                                  text: "$place_theme",
+                                  text: "${widget.place_theme}",
                                   style: TextStyle(
                                     color: Colors.grey.withOpacity(0.9),
                                     fontSize: 10,
@@ -151,9 +160,13 @@ class LikePlaceItem extends StatelessWidget {
               right: -5,
               child: IconButton(
                 onPressed: () {
-                  // 여기에 좋아요 작동 버튼 로직 대입
+                  toggleFavorite();
+                  deleteLikePlace(userId: 'test', place: '목포자연사박물관');
                 },
-                icon: Icon(Icons.favorite,color: Colors.red,), // Heart icon
+                icon: Icon(
+                  Icons.favorite,
+                  color: isFavorite ? Colors.red : Colors.white,
+                ),
               ),
             ),
           ],

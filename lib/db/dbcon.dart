@@ -1,5 +1,7 @@
 import 'package:mysql1/mysql1.dart';
 
+import '../CollaborativeFiltering/CollaborativeFiltering.dart';
+
 Future<Map<String, dynamic>> MainScreenData(String user_id) async {
   try {
     final settings = ConnectionSettings(
@@ -18,7 +20,15 @@ Future<Map<String, dynamic>> MainScreenData(String user_id) async {
     final interest_theme = user_info
         .map((row) => row['interest_theme'] as String)
         .toList()[0].split(", ");
-    final recomend_place = (await conn.query("SELECT * FROM Place WHERE place_theme IN ('${interest_theme.join("', '")}')")).toList();
+
+    await IntrestData.fetch();
+
+    List<IntrestData> intrestDataList = IntrestData.IntrestDataList;
+
+    Recommender recommender = Recommender(intrestDataList);
+    List<String> recommendations = recommender.recommendPlaces(user_id, 3);
+
+    final recomend_place = (await conn.query("SELECT * FROM Place WHERE place_name IN ('${recommendations.join("', '")}') UNION SELECT * FROM Place WHERE place_theme IN ('${interest_theme.join("', '")}')")).toList();
     final hot_place_list = (await conn.query("SELECT * FROM Place Place WHERE place_likes > 0 ORDER BY place_likes DESC;")).toList();
     final like_place_list = (await conn.query("SELECT * FROM Place WHERE place_name IN (SELECT like_place FROM User_Likes WHERE user_id='$user_id')")).toList();
 

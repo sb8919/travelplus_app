@@ -9,7 +9,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Body(user_id: user_id),
+      body: Container(
+        color: Colors.grey.shade200, // 어두운 흰색 배경 적용
+        child: Body(user_id: user_id),
+      ),
     );
   }
 }

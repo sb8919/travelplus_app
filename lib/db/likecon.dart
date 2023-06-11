@@ -14,6 +14,7 @@ Future<void> addLikePlace({required String userId, required String place}) async
     final subqueryResult = await conn.query("SELECT place_theme FROM Place WHERE place_name = '$place'");
     final placeTheme = subqueryResult.first[0] as String;
     await conn.query("INSERT INTO User_Likes (user_id, like_place, place_theme) VALUES (?, ?, ?)", [userId, place, placeTheme]);
+    await conn.query("UPDATE Place SET place_likes=(SELECT place_likes FROM Place WHERE place_name=?)+1 WHERE place_name= ?;", [place, place] );
     print('Data inserted successfully');
   } catch (e) {
     print('Failed to insert data: $e');
@@ -37,6 +38,7 @@ Future<void> deleteLikePlace({required String userId, required String place}) as
     final subqueryResult = await conn.query("SELECT place_theme FROM Place WHERE place_name = ?", [place]);
     final placeTheme = subqueryResult.first[0] as String;
     await conn.query("DELETE FROM User_Likes WHERE user_id = ? AND like_place = ? AND place_theme = ?", [userId, place, placeTheme]);
+    await conn.query("UPDATE Place SET place_likes=(SELECT place_likes FROM Place WHERE place_name=?)-1 WHERE place_name= ?;", [place, place] );
     print('Data deleted successfully');
   } catch (e) {
     print('Failed to delete data: $e');

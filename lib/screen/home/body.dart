@@ -10,18 +10,6 @@ import 'HotPlace.dart';
 import 'like_place.dart';
 import 'package:travel_plus/db/dbcon.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomeScreen(user_id: 'example_user_id'),
-    );
-  }
-}
 
 class HomeScreen extends StatelessWidget {
   final String user_id;

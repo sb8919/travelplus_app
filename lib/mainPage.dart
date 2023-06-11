@@ -126,7 +126,7 @@ class _MainPageScreenState extends State<MainPage>
                 setState(() {
                   tabBody = (BuildContext context) => MediaQuery(
                     data: MediaQuery.of(context).copyWith(),
-                    child: FavoriteScreen(animationController: animationController),
+                    child: FavoriteScreen(animationController: animationController, user_id: widget.id),
                   );
                 });
               });

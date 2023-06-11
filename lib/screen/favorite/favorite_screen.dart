@@ -5,8 +5,9 @@ import 'favorite_list_view.dart';
 
 
 class FavoriteScreen extends StatefulWidget {
-  const FavoriteScreen({Key? key, this.animationController}) : super(key: key);
+  const FavoriteScreen({Key? key, this.animationController,required this.user_id}) : super(key: key);
 
+  final String user_id;
   final AnimationController? animationController;
   @override
   _FavoriteScreenState createState() => _FavoriteScreenState();
@@ -28,10 +29,12 @@ class _FavoriteScreenState extends State<FavoriteScreen>
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     super.initState();
-    FavoriteListData.fetch().then((_) {
-      // 데이터를 가져온 후에 UI 업데이트
-      updateUI();
-    });
+    if (favoriteList.isEmpty) {
+      FavoriteListData.fetch(user_id: widget.user_id).then((_) {
+        // 데이터를 가져온 후에 UI 업데이트
+        updateUI();
+      });
+    }
   }
 
   Future<bool> getData() async {

@@ -21,7 +21,7 @@ class FavoriteListData {
 
   static List<FavoriteListData> favoriteList = <FavoriteListData>[];
 
-  static Future<void> fetch() async {
+  static Future<void> fetch({required user_id}) async {
     final conn = await MySqlConnection.connect(ConnectionSettings(
       host: 'orion.mokpo.ac.kr',
       port: 8381,
@@ -31,7 +31,7 @@ class FavoriteListData {
     ));
 
     final results = (await conn.query(
-        "SELECT * FROM Place Place WHERE place_likes > 0 ORDER BY place_likes DESC;"))
+        "SELECT * FROM Place WHERE place_name IN (SELECT like_place FROM User_Likes WHERE user_id = 'test');;"))
         .toList();
     for (var row in results) {
       final imagePath = row['place_img_url'];

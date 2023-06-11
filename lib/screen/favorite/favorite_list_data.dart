@@ -31,7 +31,7 @@ class FavoriteListData {
     ));
 
     final results = (await conn.query(
-        "SELECT * FROM Place WHERE place_name IN (SELECT like_place FROM User_Likes WHERE user_id = 'test');;"))
+        "SELECT * FROM Place WHERE place_name IN (SELECT like_place FROM User_Likes WHERE user_id = '$user_id');;"))
         .toList();
     for (var row in results) {
       final imagePath = row['place_img_url'];

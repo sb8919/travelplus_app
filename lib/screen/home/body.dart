@@ -102,7 +102,7 @@ class _BodyState extends State<Body> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: InterestPlace(
+                        child: InterestPlace(user_id: widget.user_id,
                           placelist: responseData[2],
                         ),
                       ),
@@ -113,7 +113,7 @@ class _BodyState extends State<Body> {
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: HotPlace(
+                        child: HotPlace(user_id: widget.user_id,
                           placelist: responseData[3],
                         ),
                       ),

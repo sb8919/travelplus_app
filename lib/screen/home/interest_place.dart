@@ -6,9 +6,11 @@ class InterestPlace extends StatelessWidget {
   const InterestPlace({
     Key? key,
     required this.placelist,
+    required this.user_id,
   }) : super(key: key);
 
   final List placelist;
+  final String user_id;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class InterestPlace extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PlaceInfoScreen(),
+                    builder: (context) => PlaceInfoScreen(user_id: user_id, placeName: place_name),
                   ),
                 );
               },

@@ -129,14 +129,12 @@ class Recommender {
   }
 
   double calculateSimilarity(User user1, User user2) {
-    // 두 사용자 사이의 유사도 점수 계산
-    // Jaccard 유사도나 코사인 유사도 등 다양한 유사도 측정 방법을 활용할 수 있음
 
     Set user1LikedSet = user1.likedPlaces.map((place) => place[0]).toSet();
     Set user2LikedSet = user2.likedPlaces.map((place) => place[0]).toSet();
 
-    Set intersection = user1LikedSet.intersection(user2LikedSet); // 교집합
-    Set union = user1LikedSet.union(user2LikedSet); // 합집합
+    Set intersection = user1LikedSet.intersection(user2LikedSet);
+    Set union = user1LikedSet.union(user2LikedSet);
 
     double similarity = intersection.length / union.length;
     return similarity;

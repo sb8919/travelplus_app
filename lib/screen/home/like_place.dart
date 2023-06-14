@@ -66,7 +66,7 @@ class _LikePlaceState extends State<LikePlace> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PlaceInfoScreen(),
+                    builder: (context) => PlaceInfoScreen(user_id: widget.user_id, placeName:'평화광장'),
                   ),
                 );
               },

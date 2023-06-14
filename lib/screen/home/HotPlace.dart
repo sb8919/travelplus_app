@@ -8,9 +8,11 @@ class HotPlace extends StatelessWidget {
   const HotPlace({
     super.key,
     required this.placelist,
+    required this.user_id,
   });
 
   final List placelist;
+  final String user_id;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class HotPlace extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PlaceInfoScreen(),
+                    builder: (context) => PlaceInfoScreen(user_id: user_id, placeName: '평화광장',),
                   ),
                 );
               },

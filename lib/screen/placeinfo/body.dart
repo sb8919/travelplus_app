@@ -1,28 +1,110 @@
 import 'package:flutter/material.dart';
+import 'package:mysql1/mysql1.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class Body extends StatelessWidget {
-  List<Map<String, dynamic>> barData = [
-    {'text': '가볼만한곳', 'percent': 30},
-    {'text': '추천장소', 'percent': 50},
-    {'text': '인기관광지', 'percent': 20},
-  ];
+import '../../db/likecon.dart';
+
+class MyApp extends StatelessWidget {
+  final String placeName;
+  final String user_id;
+
+  const MyApp({Key? key, required this.placeName, required this.user_id})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Place App',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: Scaffold(
+        appBar: AppBar(title: Text('Place App')),
+        body: Body(placeName: placeName, user_id: user_id),
+      ),
+    );
+  }
+}
+
+class Body extends StatefulWidget {
+  final String placeName;
+  final String user_id;
+
+  const Body({Key? key, required this.placeName, required this.user_id})
+      : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  List<Map<String, dynamic>> placeData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromDatabase();
+  }
+
+  Future<void> fetchDataFromDatabase() async {
+    final conn = await MySqlConnection.connect(ConnectionSettings(
+      host: 'orion.mokpo.ac.kr',
+      port: 8381,
+      user: 'root',
+      password: 'ScE1234**',
+      db: 'Travelplus',
+    ));
+
+    final results = await conn
+        .query("SELECT * FROM Place WHERE place_name = ?", [widget.placeName]);
+
+    for (var row in results) {
+      final item = {
+        'place_name': row['place_name'],
+        'place_address': row['place_address'],
+        'place_theme': row['place_theme'],
+        'place_likes': row['place_likes'],
+        'place_img_url': row['place_img_url'],
+        'latitude': row['latitude'],
+        'longitude': row['longitude'],
+        'theme1': row['theme1'].split(' '),
+        'theme2': row['theme2'].split(' '),
+        'theme3': row['theme3'].split(' '),
+      };
+      placeData.add(item);
+    }
+
+    await conn.close();
+
+    setState(() {
+      placeData = placeData;
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Image.network(
-            'https://cdn.psnews.co.kr/news/photo/202305/2023991_69620_1848.jpg',
-            fit: BoxFit.cover,
-            height: 300,
-          ),
+          placeData.isNotEmpty
+              ? Image.network(
+                  placeData[0]['place_img_url'],
+                  fit: BoxFit.cover,
+                  height: 300,
+                )
+              : Container(),
           Expanded(
             child: DraggableScrollableSheet(
-              initialChildSize: 0.75, // 초기 크기 설정 (전체 화면 높이 기준 비율)
-              minChildSize: 0.75, // 최소 크기 설정 (전체 화면 높이 기준 비율)
-              maxChildSize: 0.75, // 최대 크기 설정 (전체 화면 높이 기준 비율)
+              initialChildSize: 0.75,
+              minChildSize: 0.75,
+              maxChildSize: 0.75,
               builder:
                   (BuildContext context, ScrollController scrollController) {
+                print(placeData[0] );
+                List<Map<String, dynamic>> barData = [
+                  {'text': '${placeData[0]['theme1'][0]}', 'percent': int.parse(placeData[0]['theme1'][1])},
+                  {'text': '${placeData[0]['theme2'][0]}', 'percent': int.parse(placeData[0]['theme2'][1])},
+                  {'text': '${placeData[0]['theme3'][0]}', 'percent': int.parse(placeData[0]['theme3'][1])},
+                ];
                 return Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -48,33 +130,61 @@ class Body extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Text('평화광장',
-                              style: TextStyle(
-                                fontSize: 30,
-                              )),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Text(
+                                placeData.isNotEmpty
+                                    ? placeData[0]['place_name']
+                                    : '',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, bottom: 10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    placeData.isNotEmpty
+                                        ? placeData[0]['place_theme']
+                                        : '',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.white, // 텍스트 색상을 흰색으로 지정
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 8, bottom: 20),
-                          child: Text('목포시 평화로13',
-                              style: TextStyle(
-                                color: Colors.black54,
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 6, bottom: 8),
+                          padding: const EdgeInsets.only(left: 2, bottom: 20),
                           child: Text(
-                            '테마',
-                            style:TextStyle(fontSize:17,),
+                            placeData.isNotEmpty
+                                ? placeData[0]['place_address']
+                                : '',
+                            style: TextStyle(
+                              color: Colors.black54,
+                            ),
                           ),
                         ),
-                        SizedBox(height: 50.0),
                         Padding(
                           padding: const EdgeInsets.only(left: 6, bottom: 2),
                           child: Text(
                             '딥러닝 예측률',
-                            style:TextStyle(fontSize:17,),
+                            style: TextStyle(
+                              fontSize: 17,
+                            ),
                           ),
                         ),
                         Padding(
@@ -91,11 +201,13 @@ class Body extends StatelessWidget {
                                   ),
                                   SizedBox(height: 2.0),
                                   FractionallySizedBox(
-                                    widthFactor: barData[index]['percent'] / 100,
+                                    widthFactor:
+                                        barData[index]['percent'] / 100,
                                     child: Container(
                                       height: 16.0,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8.0),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                         color: Colors.blue,
                                       ),
                                     ),
@@ -113,8 +225,29 @@ class Body extends StatelessWidget {
                               Expanded(
                                 flex: 2,
                                 child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    // 왼쪽 버튼을 눌렀을 때 수행할 동작
+                                  onPressed: () async {
+                                    var likePlaceCount = await ifLikePlace(
+                                        userId: widget.user_id,
+                                        place: widget.placeName);
+                                    if (likePlaceCount == 0) {
+                                      addLikePlace(
+                                          userId: widget.user_id,
+                                          place: widget.placeName);
+                                      setState(() {
+                                        likePlaceCount = 1; // 좋아요 수 갱신
+                                      });
+                                    } else {
+                                      // 좋아요 제거
+                                      await deleteLikePlace(
+                                          userId: widget.user_id,
+                                          place: widget.placeName);
+                                      setState(() {
+                                        likePlaceCount = 0; // 좋아요 수 갱신
+                                      });
+                                    }
+                                    setState(() {
+                                      // 상태 업데이트
+                                    });
                                   },
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.transparent,
@@ -124,16 +257,39 @@ class Body extends StatelessWidget {
                                       side: BorderSide(color: Colors.blue),
                                     ),
                                   ),
-                                  icon: Icon(Icons.favorite_border_outlined, color: Colors.blue), // 왼쪽 아이콘
-                                  label:Text(''),
+                                  icon: FutureBuilder<int>(
+                                    future: ifLikePlace(
+                                        userId: widget.user_id,
+                                        place: widget.placeName),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        var likePlaceCount = snapshot.data!;
+                                        final icon = likePlaceCount == 0
+                                            ? Icons.favorite_border
+                                            : Icons.favorite;
+                                        return Icon(icon, color: Colors.blue);
+                                      } else {
+                                        return Icon(Icons
+                                            .favorite_border); // 데이터가 아직 로딩 중인 경우 기본 아이콘 표시
+                                      }
+                                    },
+                                  ),
+                                  label: Text(
+                                    placeData.isNotEmpty
+                                        ? placeData[0]['place_likes'].toString()
+                                        : '',
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 16.0),
                               Expanded(
                                 flex: 6,
                                 child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    // 오른쪽 버튼을 눌렀을 때 수행할 동작
+                                  onPressed: () async {
+                                    launchUrl(
+                                      Uri.parse('https://map.naver.com/v5/search/${placeData[0]['place_address']}'),
+                                    );
                                   },
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.transparent,
@@ -143,18 +299,16 @@ class Body extends StatelessWidget {
                                       side: BorderSide(color: Colors.blue),
                                     ),
                                   ),
-                                  icon: Icon(Icons.location_on, color: Colors.blue), // 왼쪽 아이콘
+                                  icon: Icon(Icons.location_on, color: Colors.blue),
                                   label: Text(
                                     '위치 확인하기',
                                     style: TextStyle(color: Colors.blue),
-                                  ), // 오른쪽 텍스트
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-
-
                         SizedBox(height: 200.0),
                       ],
                     ),

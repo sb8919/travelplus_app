@@ -1,31 +1,34 @@
-import 'package:flutter/material.dart' as place_info;
+import 'package:flutter/material.dart';
 import 'package:travel_plus/screen/placeinfo/body.dart';
 
-class PlaceInfoScreen extends place_info.StatelessWidget {
-  const PlaceInfoScreen({place_info.Key? key}) : super(key: key);
+class PlaceInfoScreen extends StatelessWidget {
+  final String placeName;
+  final String user_id;
+
+  const PlaceInfoScreen({Key? key, required this.placeName, required this.user_id}) : super(key: key);
 
   @override
-  place_info.Widget build(place_info.BuildContext context) {
-    return place_info.Scaffold(
-      appBar: place_info.AppBar(
-        backgroundColor: place_info.Colors.white,
-        title: place_info.Text(
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
           '추천장소',
-          style: place_info.TextStyle(
-            color: place_info.Colors.black,
+          style: TextStyle(
+            color: Colors.black,
           ),
         ),
-        leading: place_info.IconButton(
-          icon: place_info.Icon(
-            place_info.Icons.arrow_back_ios,
-            color: place_info.Colors.black,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
           ),
           onPressed: () {
-            place_info.Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
       ),
-      body:Body(),
+      body: Body(placeName: placeName,user_id: user_id,),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import '../map/map_screen.dart';
 import '../placeinfo/place_info_screen.dart';
 
 class HotPlace extends StatelessWidget {
@@ -37,7 +36,7 @@ class HotPlace extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PlaceInfoScreen(user_id: user_id, placeName: '평화광장',),
+                    builder: (context) => PlaceInfoScreen(user_id: user_id, placeName: place_name,),
                   ),
                 );
               },

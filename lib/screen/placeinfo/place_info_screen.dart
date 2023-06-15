@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:travel_plus/screen/placeinfo/body.dart';
 
+import '../../mainPage.dart';
+
 class PlaceInfoScreen extends StatelessWidget {
   final String placeName;
   final String user_id;
@@ -24,7 +26,10 @@ class PlaceInfoScreen extends StatelessWidget {
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainPage(id: user_id)),
+            );
           },
         ),
       ),

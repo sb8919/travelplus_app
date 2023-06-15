@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../db/likecon.dart';
-import '../map/map_screen.dart';
 import '../placeinfo/place_info_screen.dart';
-import 'body.dart';
 
 class LikePlace extends StatefulWidget {
   const LikePlace({
@@ -66,7 +64,7 @@ class _LikePlaceState extends State<LikePlace> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PlaceInfoScreen(user_id: widget.user_id, placeName:'평화광장'),
+                    builder: (context) => PlaceInfoScreen(user_id: widget.user_id, placeName:place_name),
                   ),
                 );
               },

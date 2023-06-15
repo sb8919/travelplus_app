@@ -90,7 +90,7 @@ class _CategoryListState extends State<CategoryList> with TickerProviderStateMix
                         );
                       },
                       child: SizedBox(
-                        height: 216,
+                        height: 217,
                         width: double.infinity,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

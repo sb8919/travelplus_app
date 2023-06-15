@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../db/likecon.dart';
 import 'favorite_list_theme.dart';
 import 'favorite_list_data.dart';
 import 'favorite_list_view.dart';
@@ -9,6 +10,8 @@ class FavoriteScreen extends StatefulWidget {
 
   final String user_id;
   final AnimationController? animationController;
+
+
   @override
   _FavoriteScreenState createState() => _FavoriteScreenState();
 }
@@ -17,26 +20,51 @@ class _FavoriteScreenState extends State<FavoriteScreen>
     with TickerProviderStateMixin {
   AnimationController? animationController;
   List<FavoriteListData> favoriteList = FavoriteListData.favoriteList;
-  late final FavoriteListData? favoriteData;
+  late FavoriteListData favoriteData;
   final ScrollController _scrollController = ScrollController();
-  String selectedLocation = '';
-  String selectedCategory = '';
+
+  List<String> dropdownList = [
+    '전체 지역',
+    '서울', '부산', '대구', '인천', '광주', '대전', '울산',
+    '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남',
+    '제주도',];
+  String selectedLocation = '전체 지역';
+  String selectedCategory = '카테고리';
+
   List<FavoriteListData> filteredList = [];
 
+  void _removePlace(int index, userid, place_name) {
+    deleteLikePlace(userId: userid, place: place_name);
+    setState(() {
+      favoriteList.removeAt(index);
+      updateFilteredList(selectedLocation);
+    });
+
+  }
+
+  void updateFilteredList(selectedLocation) {
+    filteredList = favoriteList
+        .where((item) => selectedLocation == '전체 지역' || item.placeAdd.split(' ')[0] == selectedLocation)
+        .toList();
+
+    print(selectedLocation);
+    print(filteredList);
+  }
 
   @override
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000), vsync: this);
     super.initState();
+    favoriteData = favoriteList.isNotEmpty ? favoriteList[0] : FavoriteListData();
     if (favoriteList.isEmpty) {
       FavoriteListData.fetch(user_id: widget.user_id).then((_) {
         // 데이터를 가져온 후에 UI 업데이트
         updateUI();
       });
     }
-  }
 
+  }
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     return true;
@@ -48,21 +76,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>
     super.dispose();
   }
 
-  void filterLocation(String location) {
-    filteredList = favoriteList.where((data) => data.subTxt == location).toList();
-    updateUI();
-
-    ListView.builder(
-      itemCount: filteredList.length,
-      itemBuilder: (context, index) {
-        return FavoriteListView(
-          callback: () {},
-          favoriteData: filteredList[index],
-          animationController: animationController!,
-        );
-      },
-    );
-  }
 
   void updateUI() {
     setState(() {});
@@ -71,6 +84,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>
 
   @override
   Widget build(BuildContext context) {
+    updateFilteredList(selectedLocation);
     return Theme(
       data: FavoriteListTheme.buildLightTheme(),
       child: Container(
@@ -114,11 +128,22 @@ class _FavoriteScreenState extends State<FavoriteScreen>
                               ),
                             );
                             animationController?.forward();
+
+                              // if (selectedLocation == favoriteData!.cityName) {
+                            //   favoriteData = filteredList.isNotEmpty ? filteredList[index] : FavoriteListData();
+                            // } else {
+                            //   favoriteData = favoriteList[index];
+                            // }
+
                             return FavoriteListView(
                               callback: () {},
-                              favoriteData: favoriteList[index],
+                             favoriteData: favoriteData,
                               animation: animation,
                               animationController: animationController!,
+                              remove: () {
+                                _removePlace(index, widget.user_id,
+                                    favoriteList[index].placeName);
+                              },
                             );
                           },
                         ),
@@ -150,35 +175,17 @@ class _FavoriteScreenState extends State<FavoriteScreen>
                 color: Color(0xFFF2F2F2), // Set the background color here
               ),
               child: DropdownButton<String>(
-                value: '전체 지역', // Replace with the selected value state
+                value: selectedLocation, // Replace with the selected value state
                 onChanged: (String? newValue) {
                   // Handle dropdown value changes
                   setState(() {
                     selectedLocation = newValue!;
-                    filterLocation(selectedLocation);
+                    updateFilteredList(selectedLocation);
                   });
                 },
                 underline: Container(),
                 itemHeight: 50,
-                items: <String>[
-                  '전체 지역',
-                  '서울특별시',
-                  '부산광역시',
-                  '대구광역시',
-                  '인천광역시',
-                  '광주광역시',
-                  '대전광역시',
-                  '울산광역시',
-                  '경기도',
-                  '강원도',
-                  '충청북도',
-                  '충청남도',
-                  '전라북도',
-                  '전라남도',
-                  '경상북도',
-                  '경상남도',
-                  '제주도',
-                ].map<DropdownMenuItem<String>>((String value) {
+                items: dropdownList.map<DropdownMenuItem<String>>((String value) {
                   return
                     DropdownMenuItem<String>(
                       value: value,
@@ -265,83 +272,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>
     );
   }
 
-  Widget getListUI() {
-    return Container(
-      decoration: BoxDecoration(
-        color: FavoriteListTheme.buildLightTheme().backgroundColor,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              offset: const Offset(0, -2),
-              blurRadius: 8.0),
-        ],
-      ),
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 156 - 50,
-            child: FutureBuilder<bool>(
-              future: getData(),
-              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                if (!snapshot.hasData) {
-                  return const SizedBox();
-                } else {
-                  return ListView.builder(
-                    itemCount: favoriteList.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (BuildContext context, int index) {
-                      final int count =
-                      favoriteList.length > 10 ? 10 : favoriteList.length;
-                      final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                          CurvedAnimation(
-                              parent: animationController!,
-                              curve: Interval((1 / count) * index, 1.0,
-                                  curve: Curves.fastOutSlowIn)));
-                      animationController?.forward();
 
-                      return FavoriteListView(
-                        callback: () {},
-                        favoriteData: favoriteList[index],
-                        animation: animation,
-                        animationController: animationController!,
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          )
-        ],
-      ),
-    );
-  }
 
-  Widget getHotelViewList() {
-    final List<Widget> favoriteListViews = <Widget>[];
-    for (int i = 0; i < favoriteList.length; i++) {
-      final int count = favoriteList.length;
-      final Animation<double> animation =
-      Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-          parent: animationController!,
-          curve: Interval((1 / count) * i, 1.0, curve: Curves.fastOutSlowIn),
-        ),
-      );
-      favoriteListViews.add(
-        FavoriteListView(
-          callback: () {},
-          favoriteData: favoriteList[i],
-          animation: animation,
-          animationController: animationController!,
-        ),
-      );
-    }
-    animationController?.forward();
-    return Column(
-      children: favoriteListViews,
-    );
-  }
 
   Widget getAppBarUI() {
     return Container(

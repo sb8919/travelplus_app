@@ -68,25 +68,6 @@ class _CategoryScreenState extends State<CategoryScreen>
                       height: 45,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 55, left: 25, right: 15, bottom: 0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProfileScreen(),
-                          ),
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/tab_icon/profile_1s.png',
-                        width: 65,
-                        height: 65,
-                      ),
-                    ),
-                  ),
                 ],
               ),
               Column(
@@ -98,8 +79,8 @@ class _CategoryScreenState extends State<CategoryScreen>
                     padding: EdgeInsets.only(
                       left: 10,
                       right: 16,
-                      top: 16 - 8.0 * topBarOpacity,
-                      bottom: 12 - 8.0 * topBarOpacity,
+                      top: 10,
+                      bottom: 0,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -107,7 +88,7 @@ class _CategoryScreenState extends State<CategoryScreen>
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                top: 10, left: 15, right: 0, bottom: 15),
+                                top: 0, left: 15, right: 0, bottom: 0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

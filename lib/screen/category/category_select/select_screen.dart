@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'data.dart';
+import 'package:travel_plus/screen/category/category_select/select_list_data.dart';
 import 'explore_item.dart';
 
 class SelectScreen extends StatefulWidget {
@@ -39,16 +39,16 @@ class _SelectScreenState extends State<SelectScreen> {
   Widget getAppBar(){
     return
       Container(
-          child:
-            Expanded(child:
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 10),
-                Text("여행지 목록", style: TextStyle(color: Colors.black87, fontSize: 24, fontWeight: FontWeight.w600),),
-              ],
-            )
-            ),
+        child:
+        Expanded(child:
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 10),
+            Text("여행지 목록", style: TextStyle(color: Colors.black87, fontSize: 24, fontWeight: FontWeight.w600),),
+          ],
+        )
+        ),
       );
   }
 

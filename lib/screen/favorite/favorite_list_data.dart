@@ -3,8 +3,10 @@ import 'package:mysql1/mysql1.dart';
 class FavoriteListData {
   FavoriteListData({
     this.imagePath = '',
-    this.titleTxt = '',
-    this.subTxt = "",
+    this.placeName = '',
+    this.placeAdd = "",
+    this.placeTheme = '',
+    this.cityName = '',
     this.dist = 1.8,
     this.reviews = 80,
     this.rating = 4.5,
@@ -12,13 +14,14 @@ class FavoriteListData {
   });
 
   String imagePath;
-  String titleTxt;
-  String subTxt;
+  String placeName;
+  String placeAdd;
+  String placeTheme;
+  String cityName;
   double dist;
   double rating;
   int reviews;
   int perNight;
-
   static List<FavoriteListData> favoriteList = <FavoriteListData>[];
 
   static Future<void> fetch({required user_id}) async {
@@ -35,15 +38,19 @@ class FavoriteListData {
         .toList();
     for (var row in results) {
       final imagePath = row['place_img_url'];
-      final titleTxt = row['place_name'];
-      final subTxt = row['place_address'];
+      final placeName = row['place_name'];
+      final placeAdd = row['place_address'];
+      final placeTheme = row['place_theme'];
+      final cityName = placeAdd.split(' ')[0];
       final dist = 4.5;
       final rating = 4.5;
 
       final favoriteData = FavoriteListData(
         imagePath: imagePath,
-        titleTxt: titleTxt,
-        subTxt: subTxt,
+        placeName: placeName,
+        placeAdd: placeAdd,
+        placeTheme: placeTheme,
+        cityName: cityName,
         dist: dist.toDouble(),
         rating: rating.toDouble(),
       );

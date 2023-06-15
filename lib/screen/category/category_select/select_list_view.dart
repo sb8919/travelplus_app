@@ -1,29 +1,25 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'favorite_list_data.dart';
-import 'favorite_list_theme.dart';
-import 'favorite_list_data.dart';
+import 'package:travel_plus/screen/category/category_select/select_list_data.dart';
 
+import '../../favorite/favorite_list_theme.dart';
 
-class FavoriteListView extends StatelessWidget {
-  const FavoriteListView(
-      {Key? key,
-        this.favoriteData,
-        this.animationController,
-        this.animation,
-        this.callback,
-        required this.remove,
-
-      })
+class SelectListView extends StatelessWidget {
+  SelectListView(
+    { Key? key,
+      this.radius = 10,
+      this.selectListData,
+      this.animationController,
+      this.animation,
+      this.callback})
       : super(key: key);
 
   final VoidCallback? callback;
-  final FavoriteListData? favoriteData;
+  final double radius;
+  final CategorySelectList? selectListData;
   final AnimationController? animationController;
   final Animation<double>? animation;
-  final VoidCallback remove;
 
 
   @override
@@ -38,7 +34,7 @@ class FavoriteListView extends StatelessWidget {
                 0.0, 50 * (1.0 - animation!.value), 0.0),
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: 24, right: 24, top: 8, bottom: 16),
+                  left: 13, right: 13, top: 8, bottom: 18),
               child: InkWell(
                 splashColor: Colors.transparent,
                 onTap: callback,
@@ -62,7 +58,7 @@ class FavoriteListView extends StatelessWidget {
                             AspectRatio(
                               aspectRatio: 2,
                               child: CachedNetworkImage(
-                                imageUrl: favoriteData!.imagePath, // Replace with your image URL property
+                                imageUrl: selectListData!.imagePath, // Replace with your image URL property
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => CircularProgressIndicator(),
                                 errorWidget: (context, url, error) => Icon(Icons.error),
@@ -79,19 +75,22 @@ class FavoriteListView extends StatelessWidget {
                                     child: Container(
                                       child: Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 16, top: 8, bottom: 8),
+                                            left: 12, top: 8, bottom: 8),
                                         child: Column(
                                           mainAxisAlignment:
                                           MainAxisAlignment.center,
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text(
-                                              favoriteData!.placeName,
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 22,
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 5, bottom:10),
+                                              child: Text(
+                                                selectListData!.placeName,
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20,
+                                                ),
                                               ),
                                             ),
                                             Row(
@@ -100,8 +99,15 @@ class FavoriteListView extends StatelessWidget {
                                               mainAxisAlignment:
                                               MainAxisAlignment.start,
                                               children: <Widget>[
+                                                Icon(
+                                                  FontAwesomeIcons.locationDot,
+                                                  size: 12,
+                                                  color: FavoriteListTheme
+                                                      .buildLightTheme()
+                                                      .primaryColor,
+                                                ),
                                                 Text(
-                                                  favoriteData!.placeAdd,
+                                                  selectListData!.placeAdd,
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       color: Colors.grey
@@ -110,24 +116,8 @@ class FavoriteListView extends StatelessWidget {
                                                 const SizedBox(
                                                   width: 4,
                                                 ),
-                                                Icon(
-                                                  FontAwesomeIcons.locationDot,
-                                                  size: 12,
-                                                  color: FavoriteListTheme
-                                                      .buildLightTheme()
-                                                      .primaryColor,
-                                                ),
-                                                Expanded(
-                                                  child: Text(
-                                                    '${favoriteData!.dist.toStringAsFixed(1)} km to city',
-                                                    overflow:
-                                                    TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey
-                                                            .withOpacity(0.8)),
-                                                  ),
-                                                ),
+
+
                                               ],
                                             ),
 
@@ -144,13 +134,6 @@ class FavoriteListView extends StatelessWidget {
                                       MainAxisAlignment.center,
                                       crossAxisAlignment:
                                       CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Icon(
-                                            FontAwesomeIcons.shareNodes,
-                                            size: 22,
-                                            color: Colors.black
-                                        ),
-                                      ],
                                     ),
                                   ),
                                 ],
@@ -158,29 +141,7 @@ class FavoriteListView extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Positioned(
-                          top: 8,
-                          right: 8,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(32.0),
-                              ),
-                              onTap: () {},
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: IconButton(
-                                  onPressed: remove,
-                                  icon: Icon(
-                                    Icons.favorite,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
+
                       ],
                     ),
                   ),

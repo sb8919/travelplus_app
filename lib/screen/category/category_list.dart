@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 import 'category_data.dart';
+import 'category_select/select_list_data.dart';
 import 'category_select/select_screen.dart';
 
 
 
 class CategoryList extends StatefulWidget {
   const CategoryList(
-      {Key? key, this.mainScreenAnimationController, this.mainScreenAnimation, this.categoryList})
+      {Key? key, this.mainScreenAnimationController, this.mainScreenAnimation})
       : super(key: key);
 
   final AnimationController? mainScreenAnimationController;
   final Animation<double>? mainScreenAnimation;
-  final CategoryListData? categoryList;
+
   @override
   _CategoryListState createState() => _CategoryListState();
 }
@@ -28,8 +29,7 @@ class _CategoryListState extends State<CategoryList> with TickerProviderStateMix
     'assets/category/캠핑.png',
     'assets/category/관람.png',
     'assets/category/맛집.png',
-    'assets/category/카페.png'
-
+    'assets/category/카페.png',
   ];
 
   List<String> themeName = <String>[
@@ -41,7 +41,7 @@ class _CategoryListState extends State<CategoryList> with TickerProviderStateMix
     '캠핑',
     '관람',
     '맛집',
-    '카페'
+    '카페',
   ];
 
   @override
@@ -75,11 +75,13 @@ class _CategoryListState extends State<CategoryList> with TickerProviderStateMix
                   ),
 
                   itemCount: themeListData.length,
-                  shrinkWrap: false, // GridView가 ScrollView 내에서 크기를 조정하도록 설정
+                  shrinkWrap: true, // GridView가 ScrollView 내에서 크기를 조정하도록 설정
                   physics: NeverScrollableScrollPhysics(), // GridView 내 스크롤 금지
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
+                        String selectedTheme = themeName[index];
+                        CategorySelectList.fetch(selectedTheme);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

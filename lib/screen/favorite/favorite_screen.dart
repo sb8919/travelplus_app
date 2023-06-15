@@ -10,8 +10,6 @@ class FavoriteScreen extends StatefulWidget {
 
   final String user_id;
   final AnimationController? animationController;
-
-
   @override
   _FavoriteScreenState createState() => _FavoriteScreenState();
 }
@@ -27,7 +25,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>
     '전체 지역',
     '서울', '부산', '대구', '인천', '광주', '대전', '울산',
     '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남',
-    '제주도',];
+    '제주',];
   String selectedLocation = '전체 지역';
   String selectedCategory = '카테고리';
 
@@ -37,18 +35,15 @@ class _FavoriteScreenState extends State<FavoriteScreen>
     deleteLikePlace(userId: userid, place: place_name);
     setState(() {
       favoriteList.removeAt(index);
-      updateFilteredList(selectedLocation);
     });
 
   }
 
-  void updateFilteredList(selectedLocation) {
-    filteredList = favoriteList
+  List<FavoriteListData> updateFilteredList(String selectedLocation) {
+    List<FavoriteListData> filteredList = favoriteList
         .where((item) => selectedLocation == '전체 지역' || item.placeAdd.split(' ')[0] == selectedLocation)
         .toList();
-
-    print(selectedLocation);
-    print(filteredList);
+    return filteredList;
   }
 
   @override
@@ -63,7 +58,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>
         updateUI();
       });
     }
-
   }
   Future<bool> getData() async {
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
@@ -84,7 +78,6 @@ class _FavoriteScreenState extends State<FavoriteScreen>
 
   @override
   Widget build(BuildContext context) {
-    updateFilteredList(selectedLocation);
     return Theme(
       data: FavoriteListTheme.buildLightTheme(),
       child: Container(
@@ -129,15 +122,9 @@ class _FavoriteScreenState extends State<FavoriteScreen>
                             );
                             animationController?.forward();
 
-                              // if (selectedLocation == favoriteData!.cityName) {
-                            //   favoriteData = filteredList.isNotEmpty ? filteredList[index] : FavoriteListData();
-                            // } else {
-                            //   favoriteData = favoriteList[index];
-                            // }
-
                             return FavoriteListView(
                               callback: () {},
-                             favoriteData: favoriteData,
+                              favoriteData: favoriteData,
                               animation: animation,
                               animationController: animationController!,
                               remove: () {
@@ -145,6 +132,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>
                                     favoriteList[index].placeName);
                               },
                             );
+
                           },
                         ),
                       ),

@@ -22,6 +22,13 @@ class FavoriteListData {
   double rating;
   int reviews;
   int perNight;
+
+  // placeName의 게터 추가
+  String get getPlaceName => placeName;
+
+  // cityName의 게터 추가
+  String get getCityName => cityName;
+
   static List<FavoriteListData> favoriteList = <FavoriteListData>[];
 
   static Future<void> fetch({required user_id}) async {
@@ -49,7 +56,6 @@ class FavoriteListData {
         imagePath: imagePath,
         placeName: placeName,
         placeAdd: placeAdd,
-        placeTheme: placeTheme,
         cityName: cityName,
         dist: dist.toDouble(),
         rating: rating.toDouble(),

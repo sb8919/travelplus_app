@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:travel_plus/db/likecon.dart';
+import 'package:travel_plus/screen/hotPlace/hot_place_list.dart';
+import 'package:travel_plus/screen/hotPlace/hot_place_screen.dart';
 import '../map/PlaceListMap.dart';
 import '../map/map_screen.dart';
 import 'Header.dart';
@@ -109,7 +111,12 @@ class _BodyState extends State<Body> {
                       TitlewithMoreBtn(
                         title: '현재 인기 있는 장소',
                         backgroundColor: Colors.green,
-                        press: () {},
+                        press: () { Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HotPlaceScreen(placelist: responseData[3], user_id: widget.user_id),
+                          ),
+                        );},
                       ),
                       Align(
                         alignment: Alignment.centerLeft,

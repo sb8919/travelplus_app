@@ -9,12 +9,14 @@ class HotPlaceScreen extends StatelessWidget {
   HotPlaceScreen({Key? key,
 
     required this.placelist,
+    required this.user_id,
 
   }) : super(key: key);
 
 
 
   final List placelist;
+  final String user_id;
   final ScrollController _scrollController = ScrollController();
 
 

@@ -69,7 +69,7 @@ class interest_place extends StatelessWidget {
           top: 8,
           bottom: 20,
         ),
-        width: size.width * 0.4,
+        width: size.width * 0.41,
         child: Stack(
           children: [
             Column(

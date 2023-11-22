@@ -8,7 +8,7 @@ Future<Map<String, dynamic>> MainScreenData(String user_id) async {
       host: 'orion.mokpo.ac.kr',
       port: 8381,
       user: 'root',
-      password: 'ScE1234**',
+      password: '',
       db: 'Travelplus',
     );
 
